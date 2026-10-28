@@ -41,7 +41,6 @@ class SuiteConfig:
     dataset: str = "standard"               # standard | seed
     n_items: int = 20
     include_scaffold: bool = True
-    structured: bool = True
     api_url: Optional[str] = None
     api_key: Optional[str] = None
     temperature: float = 0.0
@@ -98,7 +97,6 @@ def build_models(cfg: SuiteConfig, model_id: str) -> list:
         api_key=cfg.api_key,
         model_id=model_id,
         temperature=cfg.temperature,
-        structured_output=cfg.structured,
         max_tokens=cfg.max_tokens,
     )
     models = [api_model]
@@ -170,7 +168,6 @@ def run_suite(
             "mode": cfg.mode,
             "dataset": cfg.dataset,
             "n_items": cfg.n_items,
-            "structured": cfg.structured,
             "temperature": cfg.temperature,
             "include_scaffold": cfg.include_scaffold,
             "api_url": cfg.api_url,
@@ -194,8 +191,6 @@ def main():
     parser.add_argument("--model-id", default=None, help="Model ID for API endpoint")
     parser.add_argument("--temperature", type=float, default=0.0, help="Sampling temperature (0 = greedy)")
     parser.add_argument("--max-tokens", type=int, default=384, help="Completion token budget")
-    parser.add_argument("--no-structured", action="store_true",
-                        help="Disable pydantic schema-validated elicitation (legacy regex-only mode)")
     parser.add_argument("--no-scaffold", action="store_true", help="Skip the Bayesian harness condition")
     parser.add_argument("--output-json", default=str(RESULTS_DIR / "probe_results.json"), help="Output path for raw JSON results")
     args = parser.parse_args()
@@ -208,7 +203,6 @@ def main():
         mode=args.mode,
         dataset=args.dataset,
         n_items=args.n_items,
-        structured=not args.no_structured,
         api_url=args.api_url,
         api_key=args.api_key,
         temperature=args.temperature,

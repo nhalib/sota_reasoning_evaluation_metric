@@ -40,21 +40,20 @@ class BaseReasoningModel(ABC):
     def generate(
         self,
         prompt: str,
+        schema: Type[BaseModel],
         system_prompt: Optional[str] = None,
-        schema: Optional[Type[BaseModel]] = None,
         logprobs: bool = False,
     ) -> ModelOutput:
         """Generate response given prompt.
 
-        If ``schema`` is provided, the completion is elicited via constrained
-        decoding and validated against it; ``ModelOutput.structured`` carries the
-        parsed object and a parse failure raises ``ExtractionError``.
+        The completion is elicited via constrained decoding against ``schema``
+        and validated; ``ModelOutput.structured`` carries the parsed object and
+        a parse failure raises ``ExtractionError``.
         """
         pass
 
-    def extract_confidence(self, text: str, default: Optional[float] = 0.5) -> Optional[float]:
-        """Extracts numerical confidence percentage from text.
-        Pass default=None to distinguish 'absent' from a fallback value."""
+    def extract_confidence(self, text: str, default: Optional[float] = None) -> Optional[float]:
+        """Extracts numerical confidence percentage from text (cross-check helper)."""
         pct_match = re.search(CONFIDENCE_PATTERN, text)
         if pct_match:
             try:
@@ -94,17 +93,15 @@ class BayesianHarnessModel(BaseReasoningModel):
     def __init__(self, base_model: BaseReasoningModel):
         super().__init__(f"{base_model.name} + Bayesian Harness")
         self.base_model = base_model
-        # Inherit the elicitation mode of the wrapped model
-        self.structured_output = getattr(base_model, "structured_output", False)
 
     def generate(
         self,
         prompt: str,
+        schema: Type[BaseModel],
         system_prompt: Optional[str] = None,
-        schema: Optional[Type[BaseModel]] = None,
         logprobs: bool = False,
     ) -> ModelOutput:
-        out = self.base_model.generate(prompt, system_prompt, schema=schema, logprobs=logprobs)
+        out = self.base_model.generate(prompt, schema, system_prompt, logprobs)
         # Harness normalizes confidence to valid probability distribution
         raw_conf = out.verbalized_confidence
         # Bayesian harness applies calibration / probability normalization
@@ -129,7 +126,6 @@ class OpenAICompatibleModel(BaseReasoningModel):
         api_key: str = "EMPTY",
         model_id: str = "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
         temperature: float = 0.0,
-        structured_output: bool = True,
         max_tokens: int = 384,
     ):
         super().__init__(name)
@@ -137,7 +133,6 @@ class OpenAICompatibleModel(BaseReasoningModel):
         self.api_key = api_key
         self.model_id = model_id
         self.temperature = temperature
-        self.structured_output = structured_output
         self.max_tokens = max_tokens
 
     def _post(self, payload: dict) -> dict:
@@ -188,8 +183,8 @@ class OpenAICompatibleModel(BaseReasoningModel):
     def generate(
         self,
         prompt: str,
+        schema: Type[BaseModel],
         system_prompt: Optional[str] = None,
-        schema: Optional[Type[BaseModel]] = None,
         logprobs: bool = False,
     ) -> ModelOutput:
         messages = []
@@ -204,61 +199,46 @@ class OpenAICompatibleModel(BaseReasoningModel):
             "max_tokens": self.max_tokens,
         }
 
-        # Channel 1: unconstrained call -- free-form text + token logprobs.
-        # The sequence-likelihood arm of Probe 1 must measure natural
-        # completions; logprobs of forced-JSON tokens are format-dominated
-        # artefacts, so this channel stays schema-free.
+        # Optional free-form channel: the sequence-likelihood arm of Probe 1
+        # needs natural completions; logprobs of forced-JSON tokens are
+        # format-dominated artefacts, so that channel stays schema-free.
         free_text = ""
         mean_logprob = None
         raw = None
-        if schema is None or logprobs:
-            payload = {**base_payload}
-            if logprobs:
-                payload["logprobs"] = True
+        if logprobs:
+            payload = {**base_payload, "logprobs": True}
             data = self._post(payload)
             choice = data["choices"][0]
             free_text = self._compose_text(choice.get("message", {}))
             mean_logprob = self._mean_logprob(choice)
             raw = data
 
-        # Channel 2: schema-validated answer via server-side constrained
+        # Primary channel: schema-validated answer via server-side constrained
         # decoding (strict response_format on the OpenAI-compatible endpoint).
-        structured = None
-        if schema is not None:
-            payload = {**base_payload}
-            if self.structured_output:
-                payload["response_format"] = response_format(schema)
-            data = self._post(payload)
-            answer_text = self._compose_text(data["choices"][0].get("message", {}))
-            structured = parse_structured(answer_text, schema)
-            if not free_text:
-                free_text = answer_text
-                raw = data
+        payload = {**base_payload, "response_format": response_format(schema)}
+        data = self._post(payload)
+        answer_text = self._compose_text(data["choices"][0].get("message", {}))
+        structured = parse_structured(answer_text, schema)
+        if not free_text:
+            free_text = answer_text
+            raw = data
 
-        regex_conf = self.extract_confidence(free_text, default=None)
-        regex_ans = self.extract_answer(free_text)
-        metadata = {
-            "structured": schema is not None,
-            "regex_confidence": regex_conf,
-            "regex_answer": regex_ans,
-        }
-        if structured is not None:
+        metadata: Dict[str, Any] = {}
+        if logprobs:
+            regex_conf = self.extract_confidence(free_text)
+            regex_ans = self.extract_answer(free_text)
+            metadata["regex_confidence"] = regex_conf
+            metadata["regex_answer"] = regex_ans
             metadata["agreement"] = (
-                (regex_ans.lower().rstrip(".") in ("true", "yes")) == structured.verdict
-                if regex_ans else None
-            )
-            if regex_conf is not None:
-                metadata["conf_gap"] = round(abs(regex_conf - structured.confidence), 4) \
-                    if isinstance(structured, Probe1Answer) else None
+                regex_ans.lower().rstrip(".") in ("true", "yes")
+            ) == structured.verdict if regex_ans else None
+            if regex_conf is not None and isinstance(structured, Probe1Answer):
+                metadata["conf_gap"] = round(abs(regex_conf - structured.confidence), 4)
         if raw is not None:
             metadata["raw"] = raw
 
-        if structured is not None:
-            conf = structured.confidence if isinstance(structured, Probe1Answer) else (1.0 if structured.verdict else 0.0)
-            ans = str(structured.verdict)
-        else:
-            conf = regex_conf  # None signals 'not extractable'; runners enforce requirements
-            ans = regex_ans
+        conf = structured.confidence if isinstance(structured, Probe1Answer) else (1.0 if structured.verdict else 0.0)
+        ans = str(structured.verdict)
 
         return ModelOutput(
             text=free_text,

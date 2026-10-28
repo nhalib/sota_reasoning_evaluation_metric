@@ -41,7 +41,7 @@ def load_specs(args) -> list:
 
     A spec is either a bare model ID string or an object whose keys override
     the sweep defaults (mode, dataset, n_items, api_url, api_key,
-    temperature, max_tokens, structured, include_scaffold).
+    temperature, max_tokens, include_scaffold).
     """
     specs = []
     if args.models_file:
@@ -78,11 +78,6 @@ def make_cfg(spec: dict, defaults) -> SuiteConfig:
 
     API keys resolve: spec > --api-key > environment (.env via resolve_endpoint).
     """
-    structured = defaults.structured
-    if "no_structured" in spec:
-        structured = not spec["no_structured"]
-    if "structured" in spec:
-        structured = bool(spec["structured"])
     include_scaffold = defaults.include_scaffold
     if "no_scaffold" in spec:
         include_scaffold = not spec["no_scaffold"]
@@ -94,7 +89,6 @@ def make_cfg(spec: dict, defaults) -> SuiteConfig:
         dataset=spec.get("dataset", defaults.dataset),
         n_items=spec.get("n_items", defaults.n_items),
         include_scaffold=include_scaffold,
-        structured=structured,
         api_url=spec.get("api_url", defaults.api_url),
         api_key=spec.get("api_key", defaults.api_key),
         temperature=spec.get("temperature", defaults.temperature),
@@ -131,7 +125,6 @@ def model_config_view(cfg: SuiteConfig) -> dict:
         "dataset": cfg.dataset,
         "n_items": cfg.n_items,
         "api_url": cfg.api_url,
-        "structured": cfg.structured,
         "include_scaffold": cfg.include_scaffold,
         "temperature": cfg.temperature,
         "max_tokens": cfg.max_tokens,
@@ -151,7 +144,6 @@ def main():
     parser.add_argument("--api-key", default=None, help="Shared endpoint key (never written to any file)")
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-tokens", type=int, default=384)
-    parser.add_argument("--no-structured", action="store_true", help="Disable schema-validated elicitation for all models")
     parser.add_argument("--no-scaffold", action="store_true", help="Skip the Bayesian harness condition")
     parser.add_argument("--fail-fast", action="store_true", help="Stop the sweep after the first failed model")
     parser.add_argument("--dry-run", action="store_true", help="Print the planned model list without executing")
@@ -165,7 +157,7 @@ def main():
         mode=args.mode, dataset=args.dataset, n_items=args.n_items,
         api_url=args.api_url, api_key=args.api_key,
         temperature=args.temperature, max_tokens=args.max_tokens,
-        structured=not args.no_structured, include_scaffold=not args.no_scaffold,
+        include_scaffold=not args.no_scaffold,
     )
 
     print("==========================================================================")
@@ -205,7 +197,6 @@ def main():
                 "dataset": d.dataset,
                 "n_items": d.n_items,
                 "api_url": d.api_url,
-                "structured": d.structured,
                 "include_scaffold": d.include_scaffold,
                 "temperature": d.temperature,
                 "max_tokens": d.max_tokens,

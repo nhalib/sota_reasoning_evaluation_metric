@@ -85,11 +85,10 @@ model only):
 ```
 
 Overridable per-model keys: `mode`, `dataset`, `n_items`, `api_url`, `api_key`,
-`temperature`, `max_tokens`, `structured` / `no_structured`,
-`include_scaffold` / `no_scaffold`.
+`temperature`, `max_tokens`, `include_scaffold` / `no_scaffold`.
 
 Controller flags: `--mode`, `--dataset`, `--n-items`, `--api-url`, `--api-key`,
-`--temperature`, `--max-tokens`, `--no-structured`, `--no-scaffold` are sweep
+`--temperature`, `--max-tokens`, `--no-scaffold` are sweep
 defaults. Others: `--dry-run` (print resolved per-model configs; the API key is
 never written to any output file), `--fail-fast` (stop after first failure).
 Exit code is non-zero if any model fails.
@@ -101,7 +100,9 @@ sweep-only ones); it calls the same `run_suite([model_id], cfg)` core.
 
 ## 3. Structured Elicitation (Schema-Validated Outputs)
 
-Verbalized answers are extracted through **pydantic schemas** (`common/schemas.py`) with server-side constrained decoding (`response_format`):
+All verbalized answers are elicited exclusively through **pydantic schemas**
+(`common/schemas.py`) with server-side constrained decoding (`response_format`).
+There is no free-form extraction mode.
 
 * **Probe 1:** `Probe1Answer {verdict: bool, confidence: float in [0,1], rationale: str?}`
 * **Probe 2:** `Probe2Answer {verdict: bool, rationale: str?}`
@@ -109,8 +110,7 @@ Verbalized answers are extracted through **pydantic schemas** (`common/schemas.p
 Design rules:
 
 * **Fail loud:** any missing/out-of-range/unparseable field raises `ExtractionError`. There is no silent `0.5` fallback — a parse failure can never masquerade as a probe result (e.g. 0.5+0.5 fake coherence).
-* **Dual channel:** the free-form arm (natural text + token logprobs, used by the sequence-likelihood Brier) is emitted on a separate schema-free call; the JSON arm elicits verbalized confidence. Per-item agreement and confidence-gap between channels are logged in `records[].extraction_audit_h` so structured elicitation itself is auditable.
-* **Escape hatch:** `--no-structured` reverts to legacy regex-only extraction (with fail-loud semantics).
+* **Dual channel (Probe 1):** the sequence-likelihood arm (natural text + token logprobs) is emitted on a separate schema-free call, because logprobs of forced-JSON tokens are format-dominated artefacts. Agreement and confidence-gap between the two channels are logged in `records[].extraction_audit_h` so structured elicitation itself is auditable.
 
 ---
 

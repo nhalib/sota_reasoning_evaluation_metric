@@ -62,25 +62,25 @@ def test_clingo_control():
 def test_scaffold_model():
     """Verify the Bayesian harness scaffold normalizes and flags wrapped outputs."""
     class StubModel(BaseReasoningModel):
-        def generate(self, prompt, system_prompt=None, schema=None, logprobs=False):
-            text = "Final Answer: Yes\nConfidence: 140%"
+        def generate(self, prompt, schema, system_prompt=None, logprobs=False):
+            text = '{"verdict": true, "confidence": 1.4}'
             return ModelOutput(
                 text=text,
-                verbalized_confidence=self.extract_confidence(text),
+                verbalized_confidence=1.4,
                 token_logprob=-0.4,
-                extracted_answer=self.extract_answer(text),
+                extracted_answer="True",
+                structured=parse_structured('{"verdict": true, "confidence": 0.9}', schema),
             )
 
     model = StubModel("stub")
-    out = model.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?")
-    assert 0.0 <= out.verbalized_confidence <= 1.0
-    assert isinstance(out.token_logprob, float)
-    assert len(out.extracted_answer) > 0
+    out = model.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?", Probe1Answer)
+    assert isinstance(out.structured, Probe1Answer)
 
     # Test scaffold condition
     scaffold = BayesianHarnessModel(model)
-    s_out = scaffold.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?")
+    s_out = scaffold.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?", Probe1Answer)
     assert s_out.metadata["scaffolded"] is True
+    assert 0.0 <= s_out.verbalized_confidence <= 1.0
 
 
 def test_schema_parsing():
