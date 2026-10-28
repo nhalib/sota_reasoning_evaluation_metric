@@ -16,6 +16,7 @@ from common.metrics import (
     expected_calibration_error
 )
 from common.models import BaseReasoningModel, BayesianHarnessModel, ModelOutput
+from common.schemas import Probe1Answer, Probe2Answer, ExtractionError, parse_structured, response_format
 from probe1_uncertainty.problog_control import run_problog_control, evaluate_problog_item
 from probe1_uncertainty.dataset import PROBE1_DATASET
 from probe2_monotonicity.clingo_control import run_clingo_control, evaluate_clingo_item
@@ -61,7 +62,7 @@ def test_clingo_control():
 def test_scaffold_model():
     """Verify the Bayesian harness scaffold normalizes and flags wrapped outputs."""
     class StubModel(BaseReasoningModel):
-        def generate(self, prompt, system_prompt=None):
+        def generate(self, prompt, system_prompt=None, schema=None, logprobs=False):
             text = "Final Answer: Yes\nConfidence: 140%"
             return ModelOutput(
                 text=text,
@@ -80,3 +81,37 @@ def test_scaffold_model():
     scaffold = BayesianHarnessModel(model)
     s_out = scaffold.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?")
     assert s_out.metadata["scaffolded"] is True
+
+
+def test_schema_parsing():
+    """Structured elicitation must validate strictly and fail loud on bad output."""
+    # Clean JSON
+    p = parse_structured('{"verdict": true, "confidence": 0.82}', Probe1Answer)
+    assert p.verdict is True and p.confidence == 0.82
+
+    # Markdown-fenced JSON
+    p2 = parse_structured('Here is my answer:\n```json\n{"verdict": false, "confidence": 0.3}\n```', Probe1Answer)
+    assert p2.verdict is False
+
+    # Out-of-range confidence must raise (never a silent default)
+    with pytest.raises(ExtractionError):
+        parse_structured('{"verdict": true, "confidence": 1.7}', Probe1Answer)
+
+    # Missing field must raise
+    with pytest.raises(ExtractionError):
+        parse_structured('{"verdict": true}', Probe1Answer)
+
+    # No JSON at all must raise
+    with pytest.raises(ExtractionError):
+        parse_structured("Final Answer: True", Probe1Answer)
+
+    # Strict response_format: all fields required, no extras
+    rf = response_format(Probe1Answer)
+    schema = rf["json_schema"]["schema"]
+    assert rf["json_schema"]["strict"] is True
+    assert set(schema["required"]) == {"verdict", "confidence", "rationale"}
+    assert schema["additionalProperties"] is False
+
+    # Probe2 verdict-only schema
+    p3 = parse_structured('{"verdict": true}', Probe2Answer)
+    assert p3.verdict is True

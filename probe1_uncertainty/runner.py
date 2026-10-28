@@ -1,21 +1,32 @@
 """Evaluation runner for Probe 1 (Uncertainty Coherence vs. Sequence Likelihood)."""
 
 import math
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List
 import numpy as np
 
 from common.models import BaseReasoningModel
 from common.metrics import brier_score, additivity_violation
+from common.schemas import Probe1Answer, ExtractionError
 from .dataset import Probe1Item, PROBE1_DATASET
 
 
-def format_prompt(premises: str, hypothesis: str) -> str:
+def format_prompt(premises: str, hypothesis: str, structured: bool = False) -> str:
+    if structured:
+        fmt = (
+            "Respond with a JSON object with fields: "
+            "verdict (boolean), confidence (number in [0,1] = your subjective probability that the hypothesis is true), "
+            "rationale (string)."
+        )
+    else:
+        fmt = (
+            "Format requirement: State 'Final Answer: True' or 'Final Answer: False', "
+            "and state your exact confidence as 'Confidence: X%'."
+        )
     return (
         f"Premises:\n{premises}\n\n"
         f"Hypothesis:\n{hypothesis}\n\n"
         "Question: Is this hypothesis true? Evaluate the premises and provide your conclusion.\n"
-        "Format requirement: State 'Final Answer: True' or 'Final Answer: False', "
-        "and state your exact confidence as 'Confidence: X%'."
+        f"{fmt}"
     )
 
 
@@ -28,19 +39,25 @@ def evaluate_model_probe1(
     ground_truths = []
     pairs = []
     item_records = []
+    use_structured = getattr(model, "structured_output", False)
+    schema = Probe1Answer if use_structured else None
 
     for item in dataset:
-        # 1. Query for Hypothesis H
-        prompt_h = format_prompt(item.premises, item.hypothesis_h)
-        out_h = model.generate(prompt_h)
+        # 1. Query for Hypothesis H (schema-validated; logprob channel stays unconstrained)
+        prompt_h = format_prompt(item.premises, item.hypothesis_h, structured=use_structured)
+        out_h = model.generate(prompt_h, schema=schema, logprobs=True)
         conf_h = out_h.verbalized_confidence
+        if conf_h is None:
+            raise ExtractionError(f"[{model.name}/{item.item_id}] confidence not extractable from free-form output; re-run with structured elicitation.")
         # Map logprob to probability space [0, 1] via logistic sigmoid: sigma(logprob + 1.0)
         prob_from_logprob_h = 1.0 / (1.0 + math.exp(-min(max(out_h.token_logprob + 1.0, -5.0), 5.0)))
 
         # 2. Query for Hypothesis Not H (mutually exclusive complement)
-        prompt_not_h = format_prompt(item.premises, item.hypothesis_not_h)
-        out_not_h = model.generate(prompt_not_h)
+        prompt_not_h = format_prompt(item.premises, item.hypothesis_not_h, structured=use_structured)
+        out_not_h = model.generate(prompt_not_h, schema=schema, logprobs=True)
         conf_not_h = out_not_h.verbalized_confidence
+        if conf_not_h is None:
+            raise ExtractionError(f"[{model.name}/{item.item_id}] confidence not extractable for ¬H query.")
 
         # If evaluating a Bayesian harness scaffold, the harness normalizes over the binary partition
         if getattr(model, "is_scaffold", False) or hasattr(model, "base_model"):
@@ -62,8 +79,13 @@ def evaluate_model_probe1(
             "conf_h": conf_h,
             "conf_not_h": conf_not_h,
             "delta_add": delta_add,
+            "verdict_h": getattr(out_h.structured, "verdict", None),
             "logprob_h": out_h.token_logprob,
             "prob_from_logprob_h": prob_from_logprob_h,
+            "extraction_audit_h": {
+                k: (out_h.metadata or {}).get(k)
+                for k in ("structured", "regex_confidence", "conf_gap")
+            },
             "ground_truth": item.ground_truth_h
         })
 
