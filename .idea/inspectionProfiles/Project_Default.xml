@@ -1,0 +1,163 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="certifi" />
+          <option value="cryptography" />
+          <option value="fastapi" />
+          <option value="google-api-core" />
+          <option value="google-auth" />
+          <option value="google-cloud-aiplatform" />
+          <option value="google-cloud-core" />
+          <option value="google-cloud-storage" />
+          <option value="google-genai" />
+          <option value="grpcio" />
+          <option value="opentelemetry-api" />
+          <option value="opentelemetry-exporter-otlp-proto-common" />
+          <option value="opentelemetry-exporter-otlp-proto-http" />
+          <option value="opentelemetry-proto" />
+          <option value="opentelemetry-sdk" />
+          <option value="opentelemetry-semantic-conventions" />
+          <option value="packaging" />
+          <option value="protobuf" />
+          <option value="starlette" />
+          <option value="pandas" />
+          <option value="numpy" />
+          <option value="scipy" />
+          <option value="h5py" />
+          <option value="pymongo" />
+          <option value="boto3" />
+          <option value="requests" />
+          <option value="beautifulsoup4" />
+          <option value="python-dotenv" />
+          <option value="tqdm" />
+          <option value="json5" />
+          <option value="python-dateutil" />
+          <option value="pytz" />
+          <option value="igraph" />
+          <option value="inflect" />
+          <option value="roman" />
+          <option value="altair" />
+          <option value="annotated-types" />
+          <option value="ansible" />
+          <option value="ansible-compat" />
+          <option value="ansible-core" />
+          <option value="ansible-lint" />
+          <option value="anyio" />
+          <option value="attrs" />
+          <option value="black" />
+          <option value="blinker" />
+          <option value="botocore" />
+          <option value="bracex" />
+          <option value="cachetools" />
+          <option value="cffi" />
+          <option value="charset-normalizer" />
+          <option value="click" />
+          <option value="deprecation" />
+          <option value="distro" />
+          <option value="dnspython" />
+          <option value="docstring_parser" />
+          <option value="et_xmlfile" />
+          <option value="filelock" />
+          <option value="gitdb" />
+          <option value="GitPython" />
+          <option value="google-cloud-bigquery" />
+          <option value="google-cloud-resource-manager" />
+          <option value="google-crc32c" />
+          <option value="google-resumable-media" />
+          <option value="googleapis-common-protos" />
+          <option value="grpc-google-iam-v1" />
+          <option value="grpcio-status" />
+          <option value="h11" />
+          <option value="h2" />
+          <option value="hpack" />
+          <option value="httpcore" />
+          <option value="httptools" />
+          <option value="httpx" />
+          <option value="hyperframe" />
+          <option value="idna" />
+          <option value="iniconfig" />
+          <option value="itsdangerous" />
+          <option value="Jinja2" />
+          <option value="jmespath" />
+          <option value="jsonschema" />
+          <option value="jsonschema-specifications" />
+          <option value="MarkupSafe" />
+          <option value="massive" />
+          <option value="more-itertools" />
+          <option value="multidict" />
+          <option value="mypy_extensions" />
+          <option value="narwhals" />
+          <option value="openpyxl" />
+          <option value="pathspec" />
+          <option value="pillow" />
+          <option value="platformdirs" />
+          <option value="pluggy" />
+          <option value="postgrest" />
+          <option value="propcache" />
+          <option value="proto-plus" />
+          <option value="psutil" />
+          <option value="pyarrow" />
+          <option value="pyasn1" />
+          <option value="pyasn1_modules" />
+          <option value="pycparser" />
+          <option value="pydantic" />
+          <option value="pydantic_core" />
+          <option value="pydeck" />
+          <option value="Pygments" />
+          <option value="PyJWT" />
+          <option value="pytest" />
+          <option value="python-multipart" />
+          <option value="pytokens" />
+          <option value="PyYAML" />
+          <option value="realtime" />
+          <option value="referencing" />
+          <option value="resolvelib" />
+          <option value="rpds-py" />
+          <option value="ruamel.yaml" />
+          <option value="ruamel.yaml.clib" />
+          <option value="rustworkx" />
+          <option value="s3transfer" />
+          <option value="six" />
+          <option value="smmap" />
+          <option value="sniffio" />
+          <option value="soupsieve" />
+          <option value="storage3" />
+          <option value="streamlit" />
+          <option value="StrEnum" />
+          <option value="subprocess-tee" />
+          <option value="supabase" />
+          <option value="supabase-auth" />
+          <option value="supabase-functions" />
+          <option value="tenacity" />
+          <option value="texttable" />
+          <option value="toml" />
+          <option value="typeguard" />
+          <option value="typing-inspection" />
+          <option value="typing_extensions" />
+          <option value="urllib3" />
+          <option value="uvicorn" />
+          <option value="watchdog" />
+          <option value="wcmatch" />
+          <option value="websockets" />
+          <option value="yamllint" />
+          <option value="yarl" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="boto3-stubs[full]==1.40.6" />
+          <option value="scipy-stubs==1.16.1.0" />
+          <option value="pandas-stubs==2.3.0.250703" />
+          <option value="pandas" />
+          <option value="boto3" />
+          <option value="scipy" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

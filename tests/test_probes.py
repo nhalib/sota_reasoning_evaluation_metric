@@ -1,0 +1,82 @@
+"""Unit tests for empirical probes suite."""
+
+import sys
+from pathlib import Path
+# Add project root (probes/) to path so tests run from within probes/
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import pytest
+import numpy as np
+
+from common.metrics import (
+    brier_score,
+    additivity_violation,
+    mean_additivity_violation_rate,
+    flip_rate,
+    expected_calibration_error
+)
+from common.models import BaseReasoningModel, BayesianHarnessModel, ModelOutput
+from probe1_uncertainty.problog_control import run_problog_control, evaluate_problog_item
+from probe1_uncertainty.dataset import PROBE1_DATASET
+from probe2_monotonicity.clingo_control import run_clingo_control, evaluate_clingo_item
+from probe2_monotonicity.dataset import PROBE2_DATASET
+
+
+def test_metrics():
+    # Brier score: perfect vs inverse
+    assert brier_score([1.0, 0.0], [1, 0]) == 0.0
+    assert brier_score([0.0, 1.0], [1, 0]) == 1.0
+    assert round(brier_score([0.5, 0.5], [1, 0]), 2) == 0.25
+
+    # Additivity violation
+    assert additivity_violation(0.6, 0.4) == 0.0
+    assert round(additivity_violation(0.9, 0.8), 2) == 0.70
+
+    # Flip rate
+    assert flip_rate(["yes", "no"], ["yes", "no"]) == 0.0
+    assert flip_rate(["yes", "no"], ["no", "yes"]) == 1.0
+    assert flip_rate(["yes", "yes"], ["yes", "no"]) == 0.5
+
+
+def test_problog_control():
+    """Verify that ProbLog exact control achieves 0.0% additivity violation."""
+    res = run_problog_control(PROBE1_DATASET)
+    assert res["additivity_violation_rate"] == 0.0
+    assert res["mean_additivity_violation"] < 1e-6
+    for item_res in res["item_results"]:
+        assert item_res["is_coherent"] is True
+        assert abs(item_res["p_h"] + item_res["p_not_h"] - 1.0) < 1e-6
+
+
+def test_clingo_control():
+    """Verify that Clingo deductive fragment achieves 0.0% flip rate by construction."""
+    res = run_clingo_control(PROBE2_DATASET)
+    assert res["overall_flip_rate"] == 0.0
+    for cond, rate in res["flip_rates_by_condition"].items():
+        assert rate == 0.0
+    for item_res in res["item_results"]:
+        assert item_res["is_monotone"] is True
+
+
+def test_scaffold_model():
+    """Verify the Bayesian harness scaffold normalizes and flags wrapped outputs."""
+    class StubModel(BaseReasoningModel):
+        def generate(self, prompt, system_prompt=None):
+            text = "Final Answer: Yes\nConfidence: 140%"
+            return ModelOutput(
+                text=text,
+                verbalized_confidence=self.extract_confidence(text),
+                token_logprob=-0.4,
+                extracted_answer=self.extract_answer(text),
+            )
+
+    model = StubModel("stub")
+    out = model.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?")
+    assert 0.0 <= out.verbalized_confidence <= 1.0
+    assert isinstance(out.token_logprob, float)
+    assert len(out.extracted_answer) > 0
+
+    # Test scaffold condition
+    scaffold = BayesianHarnessModel(model)
+    s_out = scaffold.generate("Premises: Test.\nHypothesis: H.\nQuestion: Is it true?")
+    assert s_out.metadata["scaffolded"] is True

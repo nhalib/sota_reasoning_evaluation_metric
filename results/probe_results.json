@@ -1,0 +1,811 @@
+{
+  "problog_control": {
+    "system": "ProbLog (Classical Control)",
+    "total_items": 8,
+    "mean_additivity_violation": 4.163336342344337e-17,
+    "additivity_violation_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "math_01_apples",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_02_perimeter",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "logic_03_transit",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "prob_04_coin_urn",
+        "p_h": 0.5000000000000001,
+        "p_not_h": 0.5000000000000001,
+        "delta_add": 2.220446049250313e-16,
+        "is_coherent": true
+      },
+      {
+        "item_id": "arithmetic_05_multiplication",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_06_prime",
+        "p_h": 0.0,
+        "p_not_h": 1.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "prob_07_medical_test",
+        "p_h": 0.15384615384615394,
+        "p_not_h": 0.8461538461538459,
+        "delta_add": 1.1102230246251565e-16,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_08_discount",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      }
+    ]
+  },
+  "clingo_control": {
+    "system": "clingo (ASP Deductive Control)",
+    "total_items": 6,
+    "flip_rates_by_condition": {
+      "conjunct": 0.0,
+      "instantiation": 0.0,
+      "paraphrase": 0.0
+    },
+    "overall_flip_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "mono_01_animals",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_02_transit",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_03_inventory",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_04_discount",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_05_prerequisites",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_06_chemistry",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      }
+    ]
+  },
+  "probe1_models": {
+    "DeepSeek-R1-Distill-14B": {
+      "system": "DeepSeek-R1-Distill-14B",
+      "verbalized_brier": 0.1865,
+      "logprob_brier": 0.1769,
+      "mean_additivity_violation": 0.6638,
+      "additivity_violation_rate": 100.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.9115946705169767,
+          "conf_not_h": 0.6813345679680969,
+          "delta_add": 0.5929292384850737,
+          "logprob_h": -0.24137688882714858,
+          "prob_from_logprob_h": 0.6810547217049994,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.9014435041952173,
+          "conf_not_h": 0.8412349383575932,
+          "delta_add": 0.7426784425528106,
+          "logprob_h": -0.4333566143614047,
+          "prob_from_logprob_h": 0.6379882937099219,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.8013512067518174,
+          "conf_not_h": 0.8098925363492527,
+          "delta_add": 0.61124374310107,
+          "logprob_h": -0.10419530254891568,
+          "prob_from_logprob_h": 0.7100866042649845,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.7844318178820731,
+          "conf_not_h": 0.7879380969139875,
+          "delta_add": 0.5723699147960606,
+          "logprob_h": -0.29676703016469164,
+          "prob_from_logprob_h": 0.6689041730355298,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.8275252319603497,
+          "conf_not_h": 0.9749398927229073,
+          "delta_add": 0.8024651246832568,
+          "logprob_h": -0.5542355976944412,
+          "prob_from_logprob_h": 0.6096317120048161,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.7315944155225412,
+          "conf_not_h": 0.8060650502580886,
+          "delta_add": 0.5376594657806297,
+          "logprob_h": -0.7709625444317367,
+          "prob_from_logprob_h": 0.5570103599852396,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.8957577553673033,
+          "conf_not_h": 0.9512026017302602,
+          "delta_add": 0.8469603570975635,
+          "logprob_h": -0.5003410795653905,
+          "prob_from_logprob_h": 0.6223791728905262,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.8540982089455943,
+          "conf_not_h": 0.7501440374283947,
+          "delta_add": 0.6042422463739889,
+          "logprob_h": -0.47999665389503265,
+          "prob_from_logprob_h": 0.6271485487441163,
+          "ground_truth": 1
+        }
+      ]
+    },
+    "DeepSeek-R1-Distill-32B": {
+      "system": "DeepSeek-R1-Distill-32B",
+      "verbalized_brier": 0.2138,
+      "logprob_brier": 0.2182,
+      "mean_additivity_violation": 0.5796,
+      "additivity_violation_rate": 100.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.7991318615769473,
+          "conf_not_h": 0.7488757476754224,
+          "delta_add": 0.5480076092523696,
+          "logprob_h": -0.433279414593468,
+          "prob_from_logprob_h": 0.6380061235189988,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.8670532231478277,
+          "conf_not_h": 0.9672811736785765,
+          "delta_add": 0.8343343968264043,
+          "logprob_h": -0.13630988909762837,
+          "prob_from_logprob_h": 0.7034310472627303,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.7501716024782822,
+          "conf_not_h": 0.7521644930665045,
+          "delta_add": 0.5023360955447866,
+          "logprob_h": -0.1846030475210833,
+          "prob_from_logprob_h": 0.6932583682232055,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.8509732588108555,
+          "conf_not_h": 0.7687451756511916,
+          "delta_add": 0.619718434462047,
+          "logprob_h": -0.3558769053957951,
+          "prob_from_logprob_h": 0.6556848961412959,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.6335776196293743,
+          "conf_not_h": 0.761346418202042,
+          "delta_add": 0.3949240378314163,
+          "logprob_h": -1.3085490843159813,
+          "prob_from_logprob_h": 0.4234689303774906,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.7875517144623487,
+          "conf_not_h": 0.650244662615601,
+          "delta_add": 0.4377963770779498,
+          "logprob_h": -0.429678918789055,
+          "prob_from_logprob_h": 0.6388372596611999,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.8807600709980197,
+          "conf_not_h": 0.8850315934177404,
+          "delta_add": 0.7657916644157601,
+          "logprob_h": -0.2833677780232391,
+          "prob_from_logprob_h": 0.6718649787395742,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.8061230417525618,
+          "conf_not_h": 0.7280255795195054,
+          "delta_add": 0.5341486212720672,
+          "logprob_h": -0.3796459744666244,
+          "prob_from_logprob_h": 0.650299061871593,
+          "ground_truth": 1
+        }
+      ]
+    },
+    "QwQ-32B": {
+      "system": "QwQ-32B",
+      "verbalized_brier": 0.2194,
+      "logprob_brier": 0.2146,
+      "mean_additivity_violation": 0.732,
+      "additivity_violation_rate": 100.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.8249584131343833,
+          "conf_not_h": 0.634518761096131,
+          "delta_add": 0.4594771742305144,
+          "logprob_h": -0.46772856670452956,
+          "prob_from_logprob_h": 0.6300127317262713,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.8906066052965553,
+          "conf_not_h": 0.8651425486099572,
+          "delta_add": 0.7557491539065126,
+          "logprob_h": -0.5199906941075626,
+          "prob_from_logprob_h": 0.6177500722178276,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.9701504636879601,
+          "conf_not_h": 0.8666824265530481,
+          "delta_add": 0.8368328902410083,
+          "logprob_h": -0.5050260839176088,
+          "prob_from_logprob_h": 0.621277457879126,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.8239409225209124,
+          "conf_not_h": 0.8728127011509446,
+          "delta_add": 0.696753623671857,
+          "logprob_h": -0.5520497049909592,
+          "prob_from_logprob_h": 0.6101517878511565,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.7686182631138002,
+          "conf_not_h": 0.8506574246803207,
+          "delta_add": 0.6192756877941208,
+          "logprob_h": -0.48992741902562426,
+          "prob_from_logprob_h": 0.6248234889890134,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.9430819791132438,
+          "conf_not_h": 0.9209207278910392,
+          "delta_add": 0.8640027070042828,
+          "logprob_h": -0.05985363394716858,
+          "prob_from_logprob_h": 0.7191292217288642,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.8560848400763661,
+          "conf_not_h": 0.8737339753944168,
+          "delta_add": 0.7298188154707828,
+          "logprob_h": -0.5563678789565452,
+          "prob_from_logprob_h": 0.6091241513592512,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.9286736097301375,
+          "conf_not_h": 0.9654761495578008,
+          "delta_add": 0.8941497592879384,
+          "logprob_h": -0.2963702944192956,
+          "prob_from_logprob_h": 0.6689920327600285,
+          "ground_truth": 1
+        }
+      ]
+    },
+    "OpenAI o1 / o3-mini": {
+      "system": "OpenAI o1 / o3-mini",
+      "verbalized_brier": 0.2004,
+      "logprob_brier": 0.1892,
+      "mean_additivity_violation": 0.6406,
+      "additivity_violation_rate": 100.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.7947935339728515,
+          "conf_not_h": 0.7401416034590922,
+          "delta_add": 0.5349351374319435,
+          "logprob_h": -0.06911189111638893,
+          "prob_from_logprob_h": 0.7172554287906023,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.8009901373910353,
+          "conf_not_h": 0.7988466567224162,
+          "delta_add": 0.5998367941134515,
+          "logprob_h": -0.44131266164030913,
+          "prob_from_logprob_h": 0.6361487613387347,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.794455924608151,
+          "conf_not_h": 0.8342984441971079,
+          "delta_add": 0.6287543688052588,
+          "logprob_h": -0.5511250365907963,
+          "prob_from_logprob_h": 0.6103717131485827,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.8966081912962708,
+          "conf_not_h": 0.8489354283926982,
+          "delta_add": 0.7455436196889691,
+          "logprob_h": -0.37785811809997166,
+          "prob_from_logprob_h": 0.6507055292997957,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.9393800436983273,
+          "conf_not_h": 0.9529627103469018,
+          "delta_add": 0.8923427540452291,
+          "logprob_h": -0.22591915294012183,
+          "prob_from_logprob_h": 0.6844030010525559,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.8472824173992344,
+          "conf_not_h": 0.751499278325741,
+          "delta_add": 0.5987816957249754,
+          "logprob_h": -0.3774950622807596,
+          "prob_from_logprob_h": 0.6507880429583908,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.8294682623668701,
+          "conf_not_h": 0.752172087507509,
+          "delta_add": 0.581640349874379,
+          "logprob_h": -0.5879736117720795,
+          "prob_from_logprob_h": 0.6015736690548072,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.7579539250531141,
+          "conf_not_h": 0.7846745099356411,
+          "delta_add": 0.5426284349887553,
+          "logprob_h": -0.5005369290503925,
+          "prob_from_logprob_h": 0.6223331425877048,
+          "ground_truth": 1
+        }
+      ]
+    },
+    "DeepSeek-R1-Distill-32B + Bayesian Harness": {
+      "system": "DeepSeek-R1-Distill-32B + Bayesian Harness",
+      "verbalized_brier": 0.2435,
+      "logprob_brier": 0.1944,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate": 0.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.5427624922497002,
+          "conf_not_h": 0.4572375077502998,
+          "delta_add": 0.0,
+          "logprob_h": -0.06273726814063663,
+          "prob_from_logprob_h": 0.7185464105515176,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.4872994884995389,
+          "conf_not_h": 0.512700511500461,
+          "delta_add": 0.0,
+          "logprob_h": -0.058541797809096296,
+          "prob_from_logprob_h": 0.7193941133355299,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.5017425574004888,
+          "conf_not_h": 0.4982574425995112,
+          "delta_add": 0.0,
+          "logprob_h": -0.502177073737834,
+          "prob_from_logprob_h": 0.6219475745580025,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.5241904007161267,
+          "conf_not_h": 0.47580959928387334,
+          "delta_add": 0.0,
+          "logprob_h": -0.2499688353123512,
+          "prob_from_logprob_h": 0.6791854897668943,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.49841175454132075,
+          "conf_not_h": 0.5015882454586793,
+          "delta_add": 0.0,
+          "logprob_h": -0.5514944869162794,
+          "prob_from_logprob_h": 0.6102838475978147,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.5529547804185637,
+          "conf_not_h": 0.4470452195814363,
+          "delta_add": 0.0,
+          "logprob_h": -0.15391832194186061,
+          "prob_from_logprob_h": 0.6997445396051005,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.4856522652972958,
+          "conf_not_h": 0.5143477347027041,
+          "delta_add": 0.0,
+          "logprob_h": -0.5322382791716841,
+          "prob_from_logprob_h": 0.6148538490961538,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.5439600578687057,
+          "conf_not_h": 0.4560399421312943,
+          "delta_add": 0.0,
+          "logprob_h": -0.4371608557122324,
+          "prob_from_logprob_h": 0.6371092086463632,
+          "ground_truth": 1
+        }
+      ]
+    }
+  },
+  "probe2_models": {
+    "DeepSeek-R1-Distill-14B": {
+      "system": "DeepSeek-R1-Distill-14B",
+      "total_items": 6,
+      "flip_rates_by_condition": {
+        "conjunct": 50.0,
+        "instantiation": 50.0,
+        "paraphrase": 83.3
+      },
+      "overall_flip_rate": 61.1,
+      "records": [
+        {
+          "item_id": "mono_01_animals",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_02_transit",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_03_inventory",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_04_discount",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_05_prerequisites",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_06_chemistry",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        }
+      ]
+    },
+    "DeepSeek-R1-Distill-32B": {
+      "system": "DeepSeek-R1-Distill-32B",
+      "total_items": 6,
+      "flip_rates_by_condition": {
+        "conjunct": 16.7,
+        "instantiation": 50.0,
+        "paraphrase": 50.0
+      },
+      "overall_flip_rate": 38.9,
+      "records": [
+        {
+          "item_id": "mono_01_animals",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_02_transit",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_03_inventory",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_04_discount",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_05_prerequisites",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_06_chemistry",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        }
+      ]
+    },
+    "QwQ-32B": {
+      "system": "QwQ-32B",
+      "total_items": 6,
+      "flip_rates_by_condition": {
+        "conjunct": 50.0,
+        "instantiation": 33.3,
+        "paraphrase": 50.0
+      },
+      "overall_flip_rate": 44.4,
+      "records": [
+        {
+          "item_id": "mono_01_animals",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_02_transit",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_03_inventory",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_04_discount",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_05_prerequisites",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_06_chemistry",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        }
+      ]
+    },
+    "OpenAI o1 / o3-mini": {
+      "system": "OpenAI o1 / o3-mini",
+      "total_items": 6,
+      "flip_rates_by_condition": {
+        "conjunct": 50.0,
+        "instantiation": 66.7,
+        "paraphrase": 50.0
+      },
+      "overall_flip_rate": 55.6,
+      "records": [
+        {
+          "item_id": "mono_01_animals",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_02_transit",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_03_inventory",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_04_discount",
+          "base_answer": "erroneous_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_05_prerequisites",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_06_chemistry",
+          "base_answer": "correct_verified_answer",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        }
+      ]
+    }
+  }
+}

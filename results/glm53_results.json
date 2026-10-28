@@ -1,0 +1,370 @@
+{
+  "problog_control": {
+    "system": "ProbLog (Classical Control)",
+    "total_items": 8,
+    "mean_additivity_violation": 4.163336342344337e-17,
+    "additivity_violation_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "math_01_apples",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_02_perimeter",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "logic_03_transit",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "prob_04_coin_urn",
+        "p_h": 0.5000000000000001,
+        "p_not_h": 0.5000000000000001,
+        "delta_add": 2.220446049250313e-16,
+        "is_coherent": true
+      },
+      {
+        "item_id": "arithmetic_05_multiplication",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_06_prime",
+        "p_h": 0.0,
+        "p_not_h": 1.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "prob_07_medical_test",
+        "p_h": 0.15384615384615394,
+        "p_not_h": 0.8461538461538459,
+        "delta_add": 1.1102230246251565e-16,
+        "is_coherent": true
+      },
+      {
+        "item_id": "math_08_discount",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      }
+    ]
+  },
+  "clingo_control": {
+    "system": "clingo (ASP Deductive Control)",
+    "total_items": 6,
+    "flip_rates_by_condition": {
+      "conjunct": 0.0,
+      "instantiation": 0.0,
+      "paraphrase": 0.0
+    },
+    "overall_flip_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "mono_01_animals",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_02_transit",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_03_inventory",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_04_discount",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_05_prerequisites",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "mono_06_chemistry",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      }
+    ]
+  },
+  "probe1_models": {
+    "glm-5.3": {
+      "system": "glm-5.3",
+      "verbalized_brier": 0.25,
+      "logprob_brier": 0.2038,
+      "mean_additivity_violation": 1.0,
+      "additivity_violation_rate": 100.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 1.0,
+          "conf_not_h": 1.0,
+          "delta_add": 1.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        }
+      ]
+    },
+    "glm-5.3 + Bayesian Harness": {
+      "system": "glm-5.3 + Bayesian Harness",
+      "verbalized_brier": 0.2328,
+      "logprob_brier": 0.2038,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate": 0.0,
+      "records": [
+        {
+          "item_id": "math_01_apples",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_02_perimeter",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "logic_03_transit",
+          "conf_h": 0.6644295302013423,
+          "conf_not_h": 0.3355704697986577,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "prob_04_coin_urn",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "arithmetic_05_multiplication",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        },
+        {
+          "item_id": "math_06_prime",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "prob_07_medical_test",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 0
+        },
+        {
+          "item_id": "math_08_discount",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "logprob_h": -0.5,
+          "prob_from_logprob_h": 0.6224593312018546,
+          "ground_truth": 1
+        }
+      ]
+    }
+  },
+  "probe2_models": {
+    "glm-5.3": {
+      "system": "glm-5.3",
+      "total_items": 6,
+      "flip_rates_by_condition": {
+        "conjunct": 50.0,
+        "instantiation": 66.7,
+        "paraphrase": 16.7
+      },
+      "overall_flip_rate": 44.4,
+      "records": [
+        {
+          "item_id": "mono_01_animals",
+          "base_answer": "yes**",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_02_transit",
+          "base_answer": "yes",
+          "flips": {
+            "conjunct": true,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_03_inventory",
+          "base_answer": "yes",
+          "flips": {
+            "conjunct": false,
+            "instantiation": false,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_04_discount",
+          "base_answer": "yes",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        },
+        {
+          "item_id": "mono_05_prerequisites",
+          "base_answer": "yes",
+          "flips": {
+            "conjunct": true,
+            "instantiation": true,
+            "paraphrase": true
+          }
+        },
+        {
+          "item_id": "mono_06_chemistry",
+          "base_answer": "yes",
+          "flips": {
+            "conjunct": false,
+            "instantiation": true,
+            "paraphrase": false
+          }
+        }
+      ]
+    }
+  }
+}
