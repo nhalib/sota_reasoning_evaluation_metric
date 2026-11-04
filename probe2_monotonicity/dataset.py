@@ -8,7 +8,7 @@ plus equivalent Clingo (ASP) representations.
 """
 
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 @dataclass
@@ -18,8 +18,8 @@ class Probe2Item:
     question: str
     expected_conclusion: str
     additions: Dict[str, str]  # 'conjunct', 'instantiation', 'paraphrase'
-    clingo_base: str
-    clingo_additions: Dict[str, str]
+    clingo_base: Optional[str] = None
+    clingo_additions: Optional[Dict[str, str]] = None
 
 
 PROBE2_DATASET: List[Probe2Item] = [

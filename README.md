@@ -25,40 +25,59 @@ Dependencies installed in the environment:
 
 ## 2. Quickstart
 
-Run the complete evaluation suite across all classical controls and a live reasoning model endpoint (execute from **within** the `probes/` directory):
+`run_master.py` is the only entry point of the suite. Run the complete
+evaluation across a live reasoning model endpoint
+(execute from **within** the `probes/` directory):
 
 ```bash
 cd probes
-/home/vasily/krono/fofo/fofo_12env/bin/python run_probes.py \
+/home/vasily/krono/fofo/fofo_12env/bin/python run_master.py \
     --api-url "http://localhost:8000/v1" \
-    --model-id "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
+    --model "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
 ```
 
-A model endpoint is required: if neither `--model-id`/`--api-url` nor the corresponding environment/`.env` values are provided, the run aborts with an exception. Raw outputs are captured in `results/probe_results.json`.
+A model is required: without `--model`/`--models-file` the controller aborts, and
+without a resolvable endpoint (`--api-url`/`--api-key` or the corresponding
+environment/`.env` values) `run_suite()` raises before any request is sent. Raw
+output lands in `results/<slug>_probe_results.json`, where `<slug>` is the
+sanitized model ID.
 
 ### Options
 
 * **Run Probe 1 only (Uncertainty):**
   ```bash
-  /home/vasily/krono/fofo/fofo_12env/bin/python run_probes.py --mode probe1 --model-id <ID> --api-url <URL>
+  /home/vasily/krono/fofo/fofo_12env/bin/python run_master.py --mode probe1 --model <ID> --api-url <URL>
   ```
 * **Run Probe 2 only (Monotonicity):**
   ```bash
-  /home/vasily/krono/fofo/fofo_12env/bin/python run_probes.py --mode probe2 --model-id <ID> --api-url <URL>
+  /home/vasily/krono/fofo/fofo_12env/bin/python run_master.py --mode probe2 --model <ID> --api-url <URL>
   ```
+
+`run_probes.py` is a library, not a script: it holds the evaluation core
+(`run_suite()` plus the dataset loading helpers) and has no CLI. `python
+run_probes.py` does nothing. Import it to drive the suite from your own code:
+
+```python
+from run_probes import SuiteConfig, resolve_endpoint, run_suite
+
+cfg = resolve_endpoint(SuiteConfig(mode="probe1", dataset="seed", n_items=8))
+payload = run_suite(["deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"], cfg)
+```
 
 ---
 
 ## 2b. Multi-Model Sweeps (Master Controller)
 
 `run_master.py` sweeps multiple models in-process via `run_suite()` from
-`run_probes.py`. Datasets and the ProbLog/Clingo classical controls are
-model-independent, so they are computed **once** per unique (dataset, mode,
-n_items) signature and reused across the sweep. A failing model never aborts
-the run: its exception + traceback is captured in the manifest under
-`error_details`, status becomes `partial`/`failed`, and the sweep continues.
-Per-model outputs land in `results/<slug>_probe_results.json`; a combined
-manifest (status + headline metrics) lands in `results/sweep_results.json`.
+`run_probes.py` — the same code path a single `--model` run uses. Datasets are
+model-independent, so they are loaded **once** per unique (dataset, mode,
+n_items) signature and reused across the sweep. (Classical controls ProbLog and
+Clingo are verified separately via unit tests in `tests/test_probes.py`).
+A failing model never aborts the run: its exception + traceback is captured in
+the manifest under `error_details`, status becomes `partial`/`failed`, and the
+sweep continues. Per-model outputs land in `results/<slug>_probe_results.json`;
+a combined manifest (status + headline metrics) lands in
+`results/sweep_results.json`.
 
 ```bash
 # Two ad-hoc models against one endpoint:
@@ -87,14 +106,13 @@ model only):
 Overridable per-model keys: `mode`, `dataset`, `n_items`, `api_url`, `api_key`,
 `temperature`, `max_tokens`, `include_scaffold` / `no_scaffold`.
 
-Controller flags: `--mode`, `--dataset`, `--n-items`, `--api-url`, `--api-key`,
+Controller flags: `--model` (repeatable) and `--models-file` select the models;
+`--mode`, `--dataset`, `--n-items`, `--api-url`, `--api-key`,
 `--temperature`, `--max-tokens`, `--no-scaffold` are sweep
 defaults. Others: `--dry-run` (print resolved per-model configs; the API key is
-never written to any output file), `--fail-fast` (stop after first failure).
-Exit code is non-zero if any model fails.
-
-Single-model runs still work via `run_probes.py` directly (same flags minus the
-sweep-only ones); it calls the same `run_suite([model_id], cfg)` core.
+never written to any output file), `--fail-fast` (stop after first failure),
+`--output-json` (combined manifest path). Exit code is non-zero if any model
+fails.
 
 ---
 
@@ -125,8 +143,8 @@ Design rules:
 ```
 probes/
 ├── README.md                          # Documentation
-├── run_master.py                      # Master controller: multi-model sweeps
-├── run_probes.py                      # Evaluation core (run_suite) + single-model CLI
+├── run_master.py                      # Sole CLI entry point (single models and sweeps)
+├── run_probes.py                      # Evaluation core: run_suite() + setup helpers (library only)
 ├── common/
 │   ├── config.py                      # Global configuration and extraction regexes
 │   ├── metrics.py                     # Brier score, additivity violation, flip rates
@@ -141,7 +159,10 @@ probes/
 │   ├── clingo_control.py              # Classical control: ASP Clingo solver (0% flips)
 │   └── runner.py                      # Probe 2 execution logic
 ├── results/
-│   └── probe_results.json             # Full raw JSON run outputs
+│   ├── <slug>_probe_results.json      # Raw per-model outputs (written by run_master.py)
+│   ├── sweep_results.json             # Combined sweep manifest
+│   └── legacy/                        # Pre-schema artifacts, kept for provenance only
+│       └── README.md                  # Why they are not reproducible / which numbers are bad
 └── tests/
     └── test_probes.py                 # Pytest test suite
 ```

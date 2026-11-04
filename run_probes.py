@@ -2,17 +2,16 @@
 """Execution core for Empirical Probes (Section 6).
 
 Runs Probe 1 (Uncertainty Coherence) and Probe 2 (Monotonicity Defeasibility)
-against classical positive controls and live reasoning model endpoints.
-All evaluation logic lives in run_suite(), which is importable so the master
-controller can reuse loaded datasets and classical-control results across
-models. main() wraps it for single-model CLI runs, writing the raw evaluation
-output to a JSON document.
+against live reasoning model endpoints.
+
+This module is a library only: it exposes run_suite() and the setup helpers the
+master controller (run_master.py) reuses, and has no command-line interface of
+its own. run_master.py is the single entry point for the suite, including
+single-model runs (one --model flag).
 """
 
 import sys
 import os
-import json
-import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -20,14 +19,11 @@ from typing import Any, Dict, List, Optional, Sequence
 # Add project root (probes/) to path so the suite runs from within probes/
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common.config import RESULTS_DIR
 from common.models import (
     BayesianHarnessModel,
     OpenAICompatibleModel
 )
-from probe1_uncertainty.problog_control import run_problog_control
 from probe1_uncertainty.runner import evaluate_model_probe1
-from probe2_monotonicity.clingo_control import run_clingo_control
 from probe2_monotonicity.runner import evaluate_model_probe2
 
 from data_loaders import load_standard_gsm8k, load_standard_prontoqa
@@ -53,12 +49,44 @@ class SuiteConfig:
             raise ValueError(f"Invalid dataset: {self.dataset!r}")
 
 
+# Env-var names for the API key, consulted by endpoint host so a multi-provider
+# sweep picks the right credential per model without leaking one key to all.
+PROVIDER_KEY_ENVS = {
+    "deepinfra": ("DEEPINFRA_API_KEY",),
+    "together": ("TOGETHER_API_KEY",),
+    "opencode": ("OPENCODE_API_KEY",),
+}
+
+
+def _resolve_api_key(api_url: Optional[str]) -> str:
+    host = (api_url or "").lower()
+    for token, names in PROVIDER_KEY_ENVS.items():
+        if token in host:
+            for name in names:
+                val = os.getenv(name)
+                if val:
+                    return val
+    for name in ("OPENAI_API_KEY", "DEEPSEEK_API_KEY"):
+        val = os.getenv(name)
+        if val:
+            return val
+    return "EMPTY"
+
+
 def resolve_endpoint(cfg: SuiteConfig) -> SuiteConfig:
-    """Fills missing endpoint config from environment variables / .env."""
+    """Resolves credentials from environment/.env based on the configured api_url."""
     if not cfg.api_url:
-        cfg.api_url = os.getenv("OPENCODE_BASE_URI") or os.getenv("OPENAI_BASE_URL") or os.getenv("API_BASE_URL")
+        models_file = Path("models.json")
+        if models_file.exists():
+            try:
+                import json
+                raw = json.loads(models_file.read_text(encoding="utf-8"))
+                if isinstance(raw, dict) and "default_api_url" in raw:
+                    cfg.api_url = raw["default_api_url"]
+            except Exception:
+                pass
     if not cfg.api_key:
-        cfg.api_key = os.getenv("OPENCODE_API_KEY") or os.getenv("OPENAI_API_KEY") or os.getenv("DEEPSEEK_API_KEY") or "EMPTY"
+        cfg.api_key = _resolve_api_key(cfg.api_url)
     return cfg
 
 
@@ -73,20 +101,6 @@ def load_probe_datasets(cfg: SuiteConfig) -> tuple:
         p1_dataset = PROBE1_DATASET
         p2_dataset = PROBE2_DATASET
     return p1_dataset, p2_dataset
-
-
-def run_classical_controls(p1_dataset: List, p2_dataset: List, mode: str) -> tuple:
-    """Runs ProbLog/Clingo controls (model-independent). Returns (problog_res, clingo_res)."""
-    problog_res = clingo_res = None
-    if mode in ("all", "probe1"):
-        print("[*] Executing Probe 1 Classical Control: ProbLog Exact Solver...")
-        problog_res = run_problog_control(p1_dataset)
-        print(f"    -> ProbLog Additivity Violation Rate: {problog_res['additivity_violation_rate']*100:.1f}% (Coherent by construction)")
-    if mode in ("all", "probe2"):
-        print("[*] Executing Probe 2 Classical Control: Clingo (ASP Deductive Fragment)...")
-        clingo_res = run_clingo_control(p2_dataset)
-        print(f"    -> Clingo Flip Rate: {clingo_res['overall_flip_rate']:.1f}% (Monotone by construction)")
-    return problog_res, clingo_res
 
 
 def build_models(cfg: SuiteConfig, model_id: str) -> list:
@@ -122,16 +136,15 @@ def evaluate_model(model, cfg: SuiteConfig, p1_dataset: List, p2_dataset: List) 
 def run_suite(
     model_ids: Sequence[str],
     cfg: SuiteConfig,
-    controls: Optional[tuple] = None,
     datasets: Optional[tuple] = None,
     on_model_error=None,
+    **kwargs,
 ) -> Dict[str, Any]:
     """Core evaluation routine.
 
-    Loads datasets and runs classical controls once, then evaluates every
-    model in-process. Partial results are preserved: a failing model is
-    recorded under 'errors' (via on_model_error(name, exc) if given) and the
-    sweep continues.
+    Loads datasets once, then evaluates every model in-process. Partial results
+    are preserved: a failing model is recorded under 'errors' (via
+    on_model_error(name, exc) if given) and the sweep continues.
     """
     cfg.validate()
     if not cfg.api_url or not cfg.api_key:
@@ -141,7 +154,6 @@ def run_suite(
         )
 
     p1_dataset, p2_dataset = datasets if datasets is not None else load_probe_datasets(cfg)
-    problog_res, clingo_res = controls if controls is not None else run_classical_controls(p1_dataset, p2_dataset, cfg.mode)
 
     all_p1_results: Dict[str, Any] = {}
     all_p2_results: Dict[str, Any] = {}
@@ -173,58 +185,7 @@ def run_suite(
             "api_url": cfg.api_url,
             "model_ids": list(model_ids),
         },
-        "problog_control": problog_res,
-        "clingo_control": clingo_res,
         "probe1_models": all_p1_results,
         "probe2_models": all_p2_results,
         "errors": errors,
     }
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Run empirical reasoning probes.")
-    parser.add_argument("--mode", choices=["all", "probe1", "probe2"], default="all", help="Which probe to execute")
-    parser.add_argument("--dataset", choices=["standard", "seed"], default="standard", help="Benchmark dataset: 'standard' (GSM8K/ProntoQA) or 'seed' (handcrafted suite)")
-    parser.add_argument("--n-items", type=int, default=20, help="Number of items to evaluate per probe")
-    parser.add_argument("--api-url", default=None, help="Base URL for OpenAI-compatible endpoint")
-    parser.add_argument("--api-key", default=None, help="API key for endpoint")
-    parser.add_argument("--model-id", default=None, help="Model ID for API endpoint")
-    parser.add_argument("--temperature", type=float, default=0.0, help="Sampling temperature (0 = greedy)")
-    parser.add_argument("--max-tokens", type=int, default=384, help="Completion token budget")
-    parser.add_argument("--no-scaffold", action="store_true", help="Skip the Bayesian harness condition")
-    parser.add_argument("--output-json", default=str(RESULTS_DIR / "probe_results.json"), help="Output path for raw JSON results")
-    args = parser.parse_args()
-
-    print("==========================================================================")
-    print("EMPIRICAL PROBES FOR REASONING SYSTEMS (SECTION 6 EVALUATION SUITE)")
-    print("==========================================================================")
-
-    cfg = SuiteConfig(
-        mode=args.mode,
-        dataset=args.dataset,
-        n_items=args.n_items,
-        api_url=args.api_url,
-        api_key=args.api_key,
-        temperature=args.temperature,
-        max_tokens=args.max_tokens,
-        include_scaffold=not args.no_scaffold,
-    )
-    cfg = resolve_endpoint(cfg)
-    model_id = args.model_id or os.getenv("OPENCODE_MODEL_ID") or os.getenv("MODEL_ID")
-    if not model_id:
-        raise ValueError(
-            "No model endpoint configured: pass --model-id "
-            "(or set OPENCODE_MODEL_ID/MODEL_ID in the environment or .env)."
-        )
-
-    payload = run_suite([model_id], cfg)
-    if payload["errors"]:
-        print(f"\n[!] Completed with {len(payload['errors'])} error(s): {', '.join(payload['errors'])}")
-
-    with open(args.output_json, "w") as f:
-        json.dump(payload, f, indent=2)
-    print(f"\n[+] Raw experiment logs saved to: {args.output_json}")
-
-
-if __name__ == "__main__":
-    main()

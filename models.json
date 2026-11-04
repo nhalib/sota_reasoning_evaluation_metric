@@ -1,0 +1,16 @@
+{
+  "default_api_url": "https://opencode.ai/inference/openai/v1",
+  "models": [
+    {"model_id": "gpt-6.1-sol",        "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "claude-opus-5-5",    "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 2048},
+    {"model_id": "gemini-4-argon",     "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "grok-4.7",           "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "muse-wonder-1.0",    "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1024},
+    {"model_id": "big-pickle",         "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1024, "n_items": 8},
+
+    {"model_id": "deepseek-ai/DeepSeek-V4-Pro",  "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 2048},
+    {"model_id": "zai-org/GLM-5.3",              "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "moonshotai/Kimi-K3",           "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "Qwen/Qwen3.8-Flash",           "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1024}
+  ]
+}

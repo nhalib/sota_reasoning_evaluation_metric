@@ -27,7 +27,6 @@ from run_probes import (
     SuiteConfig,
     resolve_endpoint,
     load_probe_datasets,
-    run_classical_controls,
     run_suite,
 )
 
@@ -41,26 +40,39 @@ def load_specs(args) -> list:
 
     A spec is either a bare model ID string or an object whose keys override
     the sweep defaults (mode, dataset, n_items, api_url, api_key,
-    temperature, max_tokens, include_scaffold).
+    temperature, max_tokens, include_scaffold). If neither --models-file nor
+    --model is passed, defaults to 'models.json' if present.
     """
     specs = []
-    if args.models_file:
-        raw = json.loads(Path(args.models_file).read_text(encoding="utf-8"))
-        entries = raw.get("models", []) if isinstance(raw, dict) else raw
+    file_defaults = {}
+    models_file = getattr(args, "models_file", None)
+    if not models_file and not getattr(args, "model", None) and Path("models.json").exists():
+        models_file = "models.json"
+
+    if models_file:
+        raw = json.loads(Path(models_file).read_text(encoding="utf-8"))
+        if isinstance(raw, dict):
+            entries = raw.get("models", [])
+            file_defaults = {k: v for k, v in raw.items() if k != "models"}
+        else:
+            entries = raw
         if not isinstance(entries, list):
-            raise ValueError("--models-file: expected a list or {'models': [...]} object.")
+            raise ValueError(f"{models_file}: expected a list or {{'models': [...]}} object.")
         for entry in entries:
             if isinstance(entry, str):
                 entry = {"model_id": entry}
             if not isinstance(entry, dict) or not entry.get("model_id"):
-                raise ValueError(f"--models-file: entry missing 'model_id': {entry!r}")
+                raise ValueError(f"{models_file}: entry missing 'model_id': {entry!r}")
+            # Inherit default_api_url from models.json if not explicitly specified
+            if "api_url" not in entry and "default_api_url" in file_defaults:
+                entry["api_url"] = file_defaults["default_api_url"]
             specs.append(entry)
 
-    for model_id in args.model:
+    for model_id in getattr(args, "model", []):
         specs.append({"model_id": model_id})
 
     if not specs:
-        raise ValueError("No models specified: pass --models-file <json> and/or --model <id> (repeatable).")
+        raise ValueError("No models specified: configure models.json, or pass --models-file <json> / --model <id>.")
 
     seen, deduped = set(), []
     for spec in specs:
@@ -173,20 +185,16 @@ def main():
 
     cfgs = [make_cfg(s, d) for s in specs]
 
-    # Datasets and classical controls are model-independent and deterministic:
+    # Datasets are model-independent and deterministic:
     # compute them once, keyed by their config signature, and reuse.
-    datasets_cache, controls_cache = {}, {}
+    datasets_cache = {}
 
-    def get_setup(cfg: SuiteConfig):
+    def get_dataset(cfg: SuiteConfig):
         dkey = (cfg.dataset, cfg.mode, cfg.n_items)
         if dkey not in datasets_cache:
             print("\n[*] Loading datasets (shared across compatible models)...")
             datasets_cache[dkey] = load_probe_datasets(cfg)
-        ckey = (dkey, cfg.mode)
-        if ckey not in controls_cache:
-            print("\n[*] Running model-independent classical controls (shared)...")
-            controls_cache[ckey] = run_classical_controls(*datasets_cache[dkey], cfg.mode)
-        return datasets_cache[dkey], controls_cache[ckey]
+        return datasets_cache[dkey]
 
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -222,9 +230,9 @@ def main():
         }
 
         try:
-            datasets, controls = get_setup(cfg)
+            datasets = get_dataset(cfg)
             tracebacks = {}
-            payload = run_suite([model_id], cfg, controls=controls, datasets=datasets,
+            payload = run_suite([model_id], cfg, datasets=datasets,
                                  on_model_error=lambda name, exc: tracebacks.__setitem__(
                                      name, "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))))
             entry["exit_code"] = 0

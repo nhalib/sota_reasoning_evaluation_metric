@@ -19,7 +19,7 @@ from .schemas import (
 class ModelOutput:
     text: str
     verbalized_confidence: float  # [0.0, 1.0]
-    token_logprob: float         # log-likelihood
+    token_logprob: Optional[float]  # mean log-likelihood; None if endpoint cannot provide it
     extracted_answer: str
     structured: Optional[Any] = None      # validated Probe1Answer / Probe2Answer
     metadata: Optional[Dict[str, Any]] = None
@@ -145,12 +145,19 @@ class OpenAICompatibleModel(BaseReasoningModel):
             "x-opencode-session": str(uuid.uuid4())
         }
 
-        # Robust retry loop with exponential backoff
+        # Robust retry loop with exponential backoff. Client rejections (4xx
+        # except 429) are deterministic -- fail immediately with the server's
+        # message instead of burning three retries on a schema it will never
+        # accept.
         last_err = None
         for attempt in range(3):
             try:
                 with httpx.Client(timeout=90.0) as client:
                     resp = client.post(f"{self.base_url}/chat/completions", json=payload, headers=headers)
+                    if 400 <= resp.status_code < 500 and resp.status_code != 429:
+                        raise RuntimeError(
+                            f"API request rejected ({resp.status_code}): {resp.text[:300]}"
+                        ) from None
                     resp.raise_for_status()
                     return resp.json()
             except (httpx.TimeoutException, httpx.NetworkError, httpx.HTTPStatusError) as e:
@@ -205,13 +212,19 @@ class OpenAICompatibleModel(BaseReasoningModel):
         free_text = ""
         mean_logprob = None
         raw = None
+        logprobs_requested = logprobs
         if logprobs:
             payload = {**base_payload, "logprobs": True}
-            data = self._post(payload)
-            choice = data["choices"][0]
-            free_text = self._compose_text(choice.get("message", {}))
-            mean_logprob = self._mean_logprob(choice)
-            raw = data
+            try:
+                data = self._post(payload)
+                choice = data["choices"][0]
+                free_text = self._compose_text(choice.get("message", {}))
+                mean_logprob = self._mean_logprob(choice)
+                raw = data
+            except RuntimeError as e:
+                # Endpoint (e.g. the opencode gateway) rejects token logprobs:
+                # the free-form arm is unavailable; the verbalized arm survives.
+                print(f"    [warn] {self.name}: free-form/logprob channel unavailable ({str(e)[:120]})")
 
         # Primary channel: schema-validated answer via server-side constrained
         # decoding (strict response_format on the OpenAI-compatible endpoint).
@@ -223,8 +236,9 @@ class OpenAICompatibleModel(BaseReasoningModel):
             free_text = answer_text
             raw = data
 
-        metadata: Dict[str, Any] = {}
-        if logprobs:
+        metadata: Dict[str, Any] = {"logprobs_supported": mean_logprob is not None} \
+            if logprobs_requested else {}
+        if logprobs_requested and free_text:
             regex_conf = self.extract_confidence(free_text)
             regex_ans = self.extract_answer(free_text)
             metadata["regex_confidence"] = regex_conf
@@ -243,7 +257,7 @@ class OpenAICompatibleModel(BaseReasoningModel):
         return ModelOutput(
             text=free_text,
             verbalized_confidence=conf,
-            token_logprob=mean_logprob if mean_logprob is not None else -0.5,
+            token_logprob=mean_logprob,
             extracted_answer=ans,
             structured=structured,
             metadata=metadata

@@ -15,11 +15,6 @@ load_dotenv(PROBES_DIR / ".env")
 load_dotenv(PROJECT_ROOT / ".env")
 load_dotenv()
 
-# API Configuration
-API_BASE_URL = os.getenv("OPENCODE_BASE_URI") or os.getenv("OPENAI_BASE_URL") or os.getenv("API_BASE_URL") or "https://opencode.ai/inference/openai/v1"
-API_KEY = os.getenv("OPENCODE_API_KEY") or os.getenv("OPENAI_API_KEY") or os.getenv("DEEPSEEK_API_KEY") or "EMPTY"
-DEFAULT_API_MODEL = os.getenv("OPENCODE_MODEL_ID") or os.getenv("MODEL_ID") or "deepseek-v4-pro"
-
 # Random seed for reproducibility
 DEFAULT_SEED = 42
 

@@ -50,29 +50,3 @@ def flip_rate(base_answers: Sequence[str], perturbed_answers: Sequence[str]) -> 
         for b, p in zip(base_answers, perturbed_answers)
     ]
     return float(np.mean(flips))
-
-
-def expected_calibration_error(
-    probabilities: Sequence[float], outcomes: Sequence[int], n_bins: int = 10
-) -> float:
-    """Computes Expected Calibration Error (ECE) across binned confidence scores."""
-    probs = np.asarray(probabilities, dtype=float)
-    y = np.asarray(outcomes, dtype=float)
-    if len(probs) == 0:
-        return 0.0
-
-    bins = np.linspace(0.0, 1.0, n_bins + 1)
-    ece = 0.0
-    n_total = len(probs)
-
-    for i in range(n_bins):
-        bin_lower = bins[i]
-        bin_upper = bins[i + 1]
-        mask = (probs >= bin_lower) & (probs <= bin_upper) if i == n_bins - 1 else (probs >= bin_lower) & (probs < bin_upper)
-        bin_size = np.sum(mask)
-        if bin_size > 0:
-            avg_confidence = np.mean(probs[mask])
-            avg_accuracy = np.mean(y[mask])
-            ece += (bin_size / n_total) * abs(avg_confidence - avg_accuracy)
-
-    return float(ece)

@@ -36,8 +36,12 @@ def evaluate_model_probe1(
         prompt_h = format_prompt(item.premises, item.hypothesis_h)
         out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)
         conf_h = out_h.verbalized_confidence
-        # Map logprob to probability space [0, 1] via logistic sigmoid: sigma(logprob + 1.0)
-        prob_from_logprob_h = 1.0 / (1.0 + math.exp(-min(max(out_h.token_logprob + 1.0, -5.0), 5.0)))
+        # Map logprob to probability space [0, 1] via logistic sigmoid: sigma(logprob + 1.0).
+        # None when the endpoint cannot provide token logprobs (no fake placeholder).
+        prob_from_logprob_h = (
+            1.0 / (1.0 + math.exp(-min(max(out_h.token_logprob + 1.0, -5.0), 5.0)))
+            if out_h.token_logprob is not None else None
+        )
 
         # 2. Query for Hypothesis Not H (mutually exclusive complement)
         prompt_not_h = format_prompt(item.premises, item.hypothesis_not_h)
@@ -76,7 +80,8 @@ def evaluate_model_probe1(
 
     # Summary statistics
     brier_verb = brier_score(verbalized_probs, ground_truths)
-    brier_logp = brier_score(logprob_probs, ground_truths)
+    lp_pairs = [(p, y) for p, y in zip(logprob_probs, ground_truths) if p is not None]
+    brier_logp = brier_score([p for p, _ in lp_pairs], [y for _, y in lp_pairs]) if lp_pairs else None
     violations = [p["delta_add"] for p in item_records]
     mean_delta = float(np.mean(violations))
     additivity_rate = float(np.mean([1.0 if v > 0.05 else 0.0 for v in violations]))
@@ -84,7 +89,8 @@ def evaluate_model_probe1(
     return {
         "system": model.name,
         "verbalized_brier": round(brier_verb, 4),
-        "logprob_brier": round(brier_logp, 4),
+        "logprob_brier": round(brier_logp, 4) if brier_logp is not None else None,
+        "logprob_items_scored": len(lp_pairs),
         "mean_additivity_violation": round(mean_delta, 4),
         "additivity_violation_rate": round(additivity_rate * 100.0, 1),
         "records": item_records

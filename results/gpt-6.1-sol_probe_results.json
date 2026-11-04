@@ -1,0 +1,379 @@
+{
+  "run_config": {
+    "mode": "all",
+    "dataset": "standard",
+    "n_items": 20,
+    "temperature": 0.0,
+    "include_scaffold": true,
+    "api_url": "https://opencode.ai/inference/openai/v1",
+    "model_ids": [
+      "gpt-6.1-sol"
+    ]
+  },
+  "problog_control": {
+    "system": "ProbLog (Classical Control)",
+    "total_items": 20,
+    "mean_additivity_violation": 0.0,
+    "additivity_violation_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "gsm8k_000",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_001",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_002",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_003",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_004",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_005",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_006",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_007",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_008",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_009",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_010",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_011",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_012",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_013",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_014",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_015",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_016",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_017",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_018",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      },
+      {
+        "item_id": "gsm8k_019",
+        "p_h": 1.0,
+        "p_not_h": 0.0,
+        "delta_add": 0.0,
+        "is_coherent": true
+      }
+    ]
+  },
+  "clingo_control": {
+    "system": "clingo (ASP Deductive Control)",
+    "total_items": 20,
+    "flip_rates_by_condition": {
+      "conjunct": 0.0,
+      "instantiation": 0.0,
+      "paraphrase": 0.0
+    },
+    "overall_flip_rate": 0.0,
+    "item_results": [
+      {
+        "item_id": "prontoqa_000",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_001",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_002",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_003",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_004",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_005",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_006",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_007",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_008",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_009",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_010",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_011",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_012",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_013",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_014",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_015",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_016",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_017",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_018",
+        "base_derived": true,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      },
+      {
+        "item_id": "prontoqa_019",
+        "base_derived": false,
+        "flips": {
+          "conjunct": false,
+          "instantiation": false,
+          "paraphrase": false
+        },
+        "is_monotone": true
+      }
+    ]
+  },
+  "probe1_models": {},
+  "probe2_models": {},
+  "errors": {
+    "gpt-6.1-sol": "RuntimeError: API request failed after 3 attempts: Client error '400 Bad Request' for url 'https://opencode.ai/inference/openai/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+    "gpt-6.1-sol_+_Bayesian_Harness": "RuntimeError: API request failed after 3 attempts: Client error '400 Bad Request' for url 'https://opencode.ai/inference/openai/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+  }
+}

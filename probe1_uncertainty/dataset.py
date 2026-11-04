@@ -4,7 +4,7 @@ and equivalent compiled ProbLog representations.
 """
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
@@ -14,7 +14,7 @@ class Probe1Item:
     hypothesis_h: str
     hypothesis_not_h: str
     ground_truth_h: int  # 1 if H is true, 0 if False
-    problog_program: str
+    problog_program: Optional[str] = None
 
 
 PROBE1_DATASET: List[Probe1Item] = [
