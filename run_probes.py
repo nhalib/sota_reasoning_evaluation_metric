@@ -49,32 +49,14 @@ class SuiteConfig:
             raise ValueError(f"Invalid dataset: {self.dataset!r}")
 
 
-# Env-var names for the API key, consulted by endpoint host so a multi-provider
-# sweep picks the right credential per model without leaking one key to all.
-PROVIDER_KEY_ENVS = {
-    "deepinfra": ("DEEPINFRA_API_KEY",),
-    "together": ("TOGETHER_API_KEY",),
-    "opencode": ("OPENCODE_API_KEY",),
-}
-
-
-def _resolve_api_key(api_url: Optional[str]) -> str:
-    host = (api_url or "").lower()
-    for token, names in PROVIDER_KEY_ENVS.items():
-        if token in host:
-            for name in names:
-                val = os.getenv(name)
-                if val:
-                    return val
-    for name in ("OPENAI_API_KEY", "DEEPSEEK_API_KEY"):
-        val = os.getenv(name)
-        if val:
-            return val
-    return "EMPTY"
+# All probe endpoints are served by DeepInfra, so there is a single credential
+# source rather than a per-provider dispatch.
+def _resolve_api_key() -> str:
+    return os.getenv("DEEPINFRA_API_KEY") or "EMPTY"
 
 
 def resolve_endpoint(cfg: SuiteConfig) -> SuiteConfig:
-    """Resolves credentials from environment/.env based on the configured api_url."""
+    """Resolves the DeepInfra endpoint URL and credential from models.json/environment/.env."""
     if not cfg.api_url:
         models_file = Path("models.json")
         if models_file.exists():
@@ -86,7 +68,7 @@ def resolve_endpoint(cfg: SuiteConfig) -> SuiteConfig:
             except Exception:
                 pass
     if not cfg.api_key:
-        cfg.api_key = _resolve_api_key(cfg.api_url)
+        cfg.api_key = _resolve_api_key()
     return cfg
 
 
@@ -150,7 +132,7 @@ def run_suite(
     if not cfg.api_url or not cfg.api_key:
         raise ValueError(
             "No model endpoint configured: set api_url/api_key on SuiteConfig "
-            "or API_BASE_URL/OPENCODE_API_KEY (or equivalents) in the environment or .env."
+            "or DEEPINFRA_API_KEY in the environment or .env."
         )
 
     p1_dataset, p2_dataset = datasets if datasets is not None else load_probe_datasets(cfg)

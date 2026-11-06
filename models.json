@@ -1,16 +1,17 @@
 {
-  "default_api_url": "https://opencode.ai/inference/openai/v1",
+  "default_api_url": "https://api.deepinfra.com/v1/openai",
   "models": [
-    {"model_id": "gpt-6.1-sol",        "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
-    {"model_id": "claude-opus-5-5",    "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 2048},
-    {"model_id": "gemini-4-argon",     "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
-    {"model_id": "grok-4.7",           "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1536},
-    {"model_id": "muse-wonder-1.0",    "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1024},
-    {"model_id": "big-pickle",         "api_url": "https://opencode.ai/inference/openai/v1", "temperature": 0.0, "max_tokens": 1024, "n_items": 8},
-
-    {"model_id": "deepseek-ai/DeepSeek-V4-Pro",  "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 2048},
-    {"model_id": "zai-org/GLM-5.3",              "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
-    {"model_id": "moonshotai/Kimi-K3",           "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
-    {"model_id": "Qwen/Qwen3.8-Flash",           "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1024}
+    {"model_id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",       "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "deepseek-ai/DeepSeek-V4.1-Flash",             "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "deepseek-ai/DeepSeek-V4-Flash",               "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "zai-org/GLM-5.3",                             "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "zai-org/GLM-4.7",                             "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506", "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "mistralai/Mistral-Nemo-Instruct-2407",        "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1024},
+    {"model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",         "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "Qwen/Qwen3.8-Flash",                          "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1024},
+    {"model_id": "Qwen/Qwen3.5-27B",                            "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "google/gemma-3-27b-it",                       "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536},
+    {"model_id": "moonshotai/Kimi-K2.6",                        "api_url": "https://api.deepinfra.com/v1/openai", "temperature": 0.0, "max_tokens": 1536}
   ]
 }

@@ -53,12 +53,15 @@ def response_format(model: type[BaseModel], strict: bool = True) -> dict:
 
 
 _JSON_FENCE = re.compile(r"```(?:json)?\s*(.*?)```", re.IGNORECASE | re.DOTALL)
+_THINK_BLOCK = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
 def extract_json_object(text: str) -> dict:
     """Pulls the first JSON object from a completion, tolerating markdown fences."""
-    fenced = _JSON_FENCE.search(text)
-    candidate = fenced.group(1) if fenced else text
+    # Strip reasoning / scratchpad blocks from thinking models before extracting JSON
+    cleaned = _THINK_BLOCK.sub("", text).strip()
+    fenced = _JSON_FENCE.search(cleaned)
+    candidate = fenced.group(1) if fenced else cleaned
     start, end = candidate.find("{"), candidate.rfind("}")
     if start == -1 or end == -1 or end <= start:
         raise ExtractionError(f"No JSON object found in response: {text[:200]!r}")

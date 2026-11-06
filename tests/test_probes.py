@@ -92,6 +92,14 @@ def test_schema_parsing():
     p2 = parse_structured('Here is my answer:\n```json\n{"verdict": false, "confidence": 0.3}\n```', Probe1Answer)
     assert p2.verdict is False
 
+    # JSON with <think> scratchpad block (reasoning models)
+    p_think = parse_structured(
+        '<think>\nI should output {"verdict": false}\nWait, no, let me re-evaluate.\n</think>\n'
+        '{"verdict": true, "confidence": 0.95, "rationale": "verified"}',
+        Probe1Answer,
+    )
+    assert p_think.verdict is True and p_think.confidence == 0.95
+
     # Out-of-range confidence must raise (never a silent default)
     with pytest.raises(ExtractionError):
         parse_structured('{"verdict": true, "confidence": 1.7}', Probe1Answer)
@@ -224,9 +232,9 @@ def test_models_json_default_resolution():
     assert len(specs) >= 1
     # Check that the first model inherited the default_api_url from models.json
     first_model = specs[0]
-    assert first_model["api_url"] == "https://opencode.ai/inference/openai/v1"
+    assert first_model["api_url"] == "https://api.deepinfra.com/v1/openai"
 
     cfg = make_cfg(first_model, args)
-    assert cfg.api_url == "https://opencode.ai/inference/openai/v1"
+    assert cfg.api_url == "https://api.deepinfra.com/v1/openai"
 
 
