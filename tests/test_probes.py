@@ -112,16 +112,48 @@ def test_schema_parsing():
     with pytest.raises(ExtractionError):
         parse_structured("Final Answer: True", Probe1Answer)
 
-    # Strict response_format: all fields required, no extras
+    # Strict response_format: only genuinely required fields (no Optional ones),
+    # so a model can return a minimal object without overflowing max_tokens.
     rf = response_format(Probe1Answer)
     schema = rf["json_schema"]["schema"]
     assert rf["json_schema"]["strict"] is True
-    assert set(schema["required"]) == {"verdict", "confidence", "rationale"}
+    assert set(schema["required"]) == {"verdict", "confidence"}
+    assert "rationale" not in schema["required"]
+    assert "rationale" in schema["properties"]
     assert schema["additionalProperties"] is False
 
     # Probe2 verdict-only schema
     p3 = parse_structured('{"verdict": true}', Probe2Answer)
     assert p3.verdict is True
+
+
+def test_truncated_completion_retry_and_error():
+    """Primary channel: escalate max_tokens on finish_reason='length'; error when bounded."""
+    from common.models import OpenAICompatibleModel, TruncatedResponseError
+
+    good = {"choices": [{"message": {"content": '{"verdict": true, "confidence": 0.8}'},
+                          "finish_reason": "stop"}]}
+    cut = {"choices": [{"message": {"content": '{"verdict": true, "conf'},
+                        "finish_reason": "length"}]}
+
+    # Recovers after one truncation by doubling the token cap.
+    caps = []
+    def post_retry(payload):
+        caps.append(payload["max_tokens"])
+        return cut if len(caps) == 1 else good
+    m = OpenAICompatibleModel(name="m", model_id="m", max_tokens=100)
+    m._post = post_retry
+    out = m.generate("p", Probe1Answer)
+    assert out.structured.verdict is True
+    assert caps == [100, 200]
+
+    # Persistent truncation raises a clear error rather than a misleading parse failure.
+    def post_always_cut(payload):
+        return cut
+    m2 = OpenAICompatibleModel(name="m2", model_id="m2", max_tokens=100)
+    m2._post = post_always_cut
+    with pytest.raises(TruncatedResponseError):
+        m2.generate("p", Probe1Answer)
 
 
 def test_standard_data_loaders():
@@ -236,5 +268,135 @@ def test_models_json_default_resolution():
 
     cfg = make_cfg(first_model, args)
     assert cfg.api_url == "https://api.deepinfra.com/v1/openai"
+
+
+def test_timestamped_outputs(tmp_path):
+    """Verify timestamp formatting and output path resolution."""
+    import re
+    from common.config import get_timestamp_str
+    from run_master import resolve_model_output_paths, resolve_sweep_output_paths
+
+    ts = get_timestamp_str()
+    assert re.match(r"^\d{8}_\d{6}$", ts)
+
+    # 1. Model output paths with timestamping (default)
+    p_primary, p_latest = resolve_model_output_paths("test_model", tmp_path, timestamp=ts)
+    assert p_primary == tmp_path / f"test_model_probe_results_{ts}.json"
+    assert p_latest == tmp_path / "test_model_probe_results.json"
+
+    # 2. Model output paths with timestamping disabled
+    p_notime, p_notime_latest = resolve_model_output_paths("test_model", tmp_path, timestamp=None)
+    assert p_notime == tmp_path / "test_model_probe_results.json"
+    assert p_notime_latest is None
+
+    # 3. Model output paths inside dedicated timestamp directory
+    p_dir_primary, p_dir_latest = resolve_model_output_paths("test_model", tmp_path, timestamp=ts, timestamp_dir=True)
+    assert p_dir_primary == tmp_path / ts / f"test_model_probe_results_{ts}.json"
+    assert p_dir_latest == tmp_path / ts / "test_model_probe_results.json"
+    assert (tmp_path / ts).is_dir()
+
+    # 4. Sweep manifest paths default
+    s_primary, s_latest = resolve_sweep_output_paths(None, tmp_path, timestamp=ts)
+    assert s_primary == tmp_path / f"sweep_results_{ts}.json"
+    assert s_latest == tmp_path / "sweep_results.json"
+
+    # 5. Sweep manifest paths with custom file and timestamp
+    custom_target = str(tmp_path / "custom_manifest.json")
+    s_cust_primary, s_cust_latest = resolve_sweep_output_paths(custom_target, tmp_path, timestamp=ts)
+    assert s_cust_primary == tmp_path / f"custom_manifest_{ts}.json"
+    assert s_cust_latest == Path(custom_target)
+
+
+def test_seeded_dataset_sampling():
+    """Verify deterministic seeded sampling across GSM8K and ProntoQA."""
+    from data_loaders import load_standard_gsm8k, load_standard_prontoqa
+
+    # GSM8K
+    gsm_seed42_a = load_standard_gsm8k(n_items=5, seed=42)
+    gsm_seed42_b = load_standard_gsm8k(n_items=5, seed=42)
+    gsm_seed99 = load_standard_gsm8k(n_items=5, seed=99)
+    gsm_seq = load_standard_gsm8k(n_items=5, seed=None)
+
+    assert len(gsm_seed42_a) == 5
+    assert [x.premises for x in gsm_seed42_a] == [x.premises for x in gsm_seed42_b]
+    assert [x.premises for x in gsm_seed42_a] != [x.premises for x in gsm_seed99]
+    assert [x.premises for x in gsm_seed42_a] != [x.premises for x in gsm_seq]
+
+    # ProntoQA
+    pqa_seed42_a = load_standard_prontoqa(n_items=5, seed=42)
+    pqa_seed42_b = load_standard_prontoqa(n_items=5, seed=42)
+    pqa_seed99 = load_standard_prontoqa(n_items=5, seed=99)
+    pqa_seq = load_standard_prontoqa(n_items=5, seed=None)
+
+    assert len(pqa_seed42_a) == 5
+    assert [x.base_premises for x in pqa_seed42_a] == [x.base_premises for x in pqa_seed42_b]
+    assert [x.base_premises for x in pqa_seed42_a] != [x.base_premises for x in pqa_seed99]
+    assert [x.base_premises for x in pqa_seed42_a] != [x.base_premises for x in pqa_seq]
+
+
+def test_timeout_and_token_ceiling_config():
+    """Verify timeout and token ceiling defaults, propagation, and retry bounds."""
+    from common.config import DEFAULT_TIMEOUT, DEFAULT_TOKEN_CEILING
+    from common.models import OpenAICompatibleModel, TruncatedResponseError
+    from run_probes import SuiteConfig, build_models
+    from run_master import make_cfg
+    from types import SimpleNamespace
+
+    # 1. Defaults
+    assert DEFAULT_TIMEOUT == 180.0
+    assert DEFAULT_TOKEN_CEILING == 16384
+    m_default = OpenAICompatibleModel(name="test", model_id="test")
+    assert m_default.timeout == 180.0
+    assert m_default.token_ceiling == 16384
+
+    # 2. Custom values on OpenAICompatibleModel
+    m_custom = OpenAICompatibleModel(
+        name="test", model_id="test", timeout=240.0, token_ceiling=32768, truncation_retries=5
+    )
+    assert m_custom.timeout == 240.0
+    assert m_custom.token_ceiling == 32768
+    assert m_custom.truncation_retries == 5
+
+    # 3. Propagation through SuiteConfig and build_models
+    cfg = SuiteConfig(api_url="http://localhost:8000/v1", api_key="test", timeout=200.0, token_ceiling=8192)
+    models = build_models(cfg, "test_model")
+    assert models[0].timeout == 200.0
+    assert models[0].token_ceiling == 8192
+
+    # 4. make_cfg propagation from specs and defaults
+    defaults = SimpleNamespace(
+        mode="all", dataset="standard", n_items=10, seed=42,
+        api_url="http://localhost:8000/v1", api_key="key",
+        temperature=0.0, max_tokens=500,
+        timeout=150.0, token_ceiling=10000,
+        include_scaffold=False,
+    )
+    spec_no_override = {"model_id": "m1"}
+    cfg1 = make_cfg(spec_no_override, defaults)
+    assert cfg1.timeout == 150.0
+    assert cfg1.token_ceiling == 10000
+
+    spec_with_override = {"model_id": "m2", "timeout": 300.0, "token_ceiling": 20000}
+    cfg2 = make_cfg(spec_with_override, defaults)
+    assert cfg2.timeout == 300.0
+    assert cfg2.token_ceiling == 20000
+
+    # 5. Token escalation bounds up to custom token_ceiling
+    cut = {"choices": [{"message": {"content": '{"verdict": true, "conf'}, "finish_reason": "length"}]}
+    caps = []
+    def record_cap(payload):
+        caps.append(payload["max_tokens"])
+        return cut
+
+    m_escalate = OpenAICompatibleModel(
+        name="esc", model_id="esc", max_tokens=1000, token_ceiling=3500, truncation_retries=4
+    )
+    m_escalate._post = record_cap
+    with pytest.raises(TruncatedResponseError):
+        m_escalate.generate("prompt", Probe1Answer)
+    # Expected progression: 1000 -> 2000 -> 3500 (capped by token_ceiling) -> TruncatedResponseError
+    assert caps == [1000, 2000, 3500]
+
+
 
 

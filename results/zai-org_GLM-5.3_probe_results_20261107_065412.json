@@ -1,0 +1,1433 @@
+{
+  "run_config": {
+    "mode": "all",
+    "dataset": "standard",
+    "n_items": 100,
+    "seed": 87,
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "timeout": 180.0,
+    "token_ceiling": 8192,
+    "include_scaffold": true,
+    "api_url": "https://api.deepinfra.com/v1/openai",
+    "model_ids": [
+      "zai-org/GLM-5.3"
+    ]
+  },
+  "probe1_models": {
+    "zai-org_GLM-5.3_+_Bayesian_Harness": {
+      "system": "zai-org_GLM-5.3_+_Bayesian_Harness",
+      "verbalized_brier": 0.2501,
+      "logprob_brier": 0.0807,
+      "logprob_items_scored": 100,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate": 0.0,
+      "records": [
+        {
+          "item_id": "gsm8k_000",
+          "conf_h": 0.49746192893401014,
+          "conf_not_h": 0.5025380710659899,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.10150948041976182,
+          "prob_from_logprob_h": 0.7106392051875384,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_001",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06541623908715284,
+          "prob_from_logprob_h": 0.7180043051872909,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_002",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.10957686643865576,
+          "prob_from_logprob_h": 0.7089774847607269,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_003",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0864096637779577,
+          "prob_from_logprob_h": 0.713734294384757,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_004",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06347892327370117,
+          "prob_from_logprob_h": 0.7183963957880114,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_005",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.055484772526423816,
+          "prob_from_logprob_h": 0.7200108093888461,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_006",
+          "conf_h": 0.5103092783505154,
+          "conf_not_h": 0.4896907216494846,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08281035034630597,
+          "prob_from_logprob_h": 0.7144691315506382,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_007",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06525607179864407,
+          "prob_from_logprob_h": 0.7180367337861683,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_008",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.09486038551256848,
+          "prob_from_logprob_h": 0.7120045487792047,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_009",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05359943339710021,
+          "prob_from_logprob_h": 0.7203907270896844,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_010",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.042683759463054236,
+          "prob_from_logprob_h": 0.7225841501403218,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_011",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06482704299208054,
+          "prob_from_logprob_h": 0.7181235868250152,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_012",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.13081195942761062,
+          "prob_from_logprob_h": 0.7045767180478286,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_013",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0795920270838608,
+          "prob_from_logprob_h": 0.7151252257013357,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_014",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06601822579984404,
+          "prob_from_logprob_h": 0.7178824024613217,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_015",
+          "conf_h": 0.4896907216494845,
+          "conf_not_h": 0.5103092783505154,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.14343513602733898,
+          "prob_from_logprob_h": 0.701942456701236,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_016",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04366051727376868,
+          "prob_from_logprob_h": 0.722388310325271,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_017",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07001087334610606,
+          "prob_from_logprob_h": 0.7170730795215703,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_018",
+          "conf_h": 0.49746192893401014,
+          "conf_not_h": 0.5025380710659899,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08164033068145984,
+          "prob_from_logprob_h": 0.7147077591557242,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_019",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05404305224740538,
+          "prob_from_logprob_h": 0.7203013611283081,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_020",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06563123052370001,
+          "prob_from_logprob_h": 0.7179607729445933,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_021",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07741822665727931,
+          "prob_from_logprob_h": 0.7155678676253623,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_022",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07485083946028669,
+          "prob_from_logprob_h": 0.7160901198856162,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_023",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08572261330895461,
+          "prob_from_logprob_h": 0.713874650306718,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_024",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08766607094093495,
+          "prob_from_logprob_h": 0.7134775193041019,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_025",
+          "conf_h": 0.49489795918367346,
+          "conf_not_h": 0.5051020408163265,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08047150011863569,
+          "prob_from_logprob_h": 0.7149460245617579,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_026",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08453572367355953,
+          "prob_from_logprob_h": 0.7141170200224713,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_027",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06182843842750328,
+          "prob_from_logprob_h": 0.718730173458215,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_028",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06914754495704246,
+          "prob_from_logprob_h": 0.7172481981329055,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_029",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05161120923891225,
+          "prob_from_logprob_h": 0.7207910354196579,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_030",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.11605928499855746,
+          "prob_from_logprob_h": 0.7076381679857323,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_031",
+          "conf_h": 0.4767441860465116,
+          "conf_not_h": 0.5232558139534884,
+          "delta_add": 0.0,
+          "verdict_h": false,
+          "logprob_h": -0.15196168321307982,
+          "prob_from_logprob_h": 0.7001554728126692,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_032",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.037748895079297386,
+          "prob_from_logprob_h": 0.723572287378875,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_033",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05324362733471504,
+          "prob_from_logprob_h": 0.7204623907470327,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_034",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08053907417528049,
+          "prob_from_logprob_h": 0.7149322528901809,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_035",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.052663248436934956,
+          "prob_from_logprob_h": 0.7205792619723761,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_036",
+          "conf_h": 0.5025380710659898,
+          "conf_not_h": 0.4974619289340102,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08988437607280754,
+          "prob_from_logprob_h": 0.7130238224013964,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_037",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.043204701877263836,
+          "prob_from_logprob_h": 0.7224797118458582,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_038",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04754508183863678,
+          "prob_from_logprob_h": 0.7216086138016025,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_039",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05768989446515907,
+          "prob_from_logprob_h": 0.7195660516998381,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_040",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.09855458294188153,
+          "prob_from_logprob_h": 0.7112464456820762,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_041",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07318351314080665,
+          "prob_from_logprob_h": 0.7164289735981497,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_042",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06743930166577394,
+          "prob_from_logprob_h": 0.7175945067698417,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_043",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05516160805464908,
+          "prob_from_logprob_h": 0.7200759531770363,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_044",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07031161726922798,
+          "prob_from_logprob_h": 0.7170120608284918,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_045",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04915417147749679,
+          "prob_from_logprob_h": 0.7212852491536,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_046",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.15168177835421787,
+          "prob_from_logprob_h": 0.7002142321268818,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_047",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07705578158690175,
+          "prob_from_logprob_h": 0.7156416304857349,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_048",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0758493843357421,
+          "prob_from_logprob_h": 0.7158870668626787,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_049",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06940344125257483,
+          "prob_from_logprob_h": 0.7171962986551161,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_050",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07109188495120881,
+          "prob_from_logprob_h": 0.7168537132126479,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_051",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08459467762272821,
+          "prob_from_logprob_h": 0.7141049841918004,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_052",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08913438848796433,
+          "prob_from_logprob_h": 0.713177260977973,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_053",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.12872798116628503,
+          "prob_from_logprob_h": 0.7050103097070616,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_054",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07388179623532434,
+          "prob_from_logprob_h": 0.7162870900156048,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_055",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.12777025005903972,
+          "prob_from_logprob_h": 0.7052094506701744,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_056",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05826270577830934,
+          "prob_from_logprob_h": 0.719450449139792,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_057",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0485753865348251,
+          "prob_from_logprob_h": 0.7214015890298503,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_058",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06669188443130328,
+          "prob_from_logprob_h": 0.7177459482020222,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_059",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07489666185223408,
+          "prob_from_logprob_h": 0.7160808038692247,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_060",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07340706790707782,
+          "prob_from_logprob_h": 0.7163835543499397,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_061",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08980439799698377,
+          "prob_from_logprob_h": 0.7130401873045185,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_062",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08278067730370942,
+          "prob_from_logprob_h": 0.7144751849015744,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_063",
+          "conf_h": 0.5142857142857143,
+          "conf_not_h": 0.48571428571428565,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.16837775459578905,
+          "prob_from_logprob_h": 0.6966978357809788,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_064",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0563930905434691,
+          "prob_from_logprob_h": 0.7198276602088953,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_065",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06653647763665349,
+          "prob_from_logprob_h": 0.7177774304866265,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_066",
+          "conf_h": 0.49746192893401014,
+          "conf_not_h": 0.5025380710659899,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06093587857985691,
+          "prob_from_logprob_h": 0.7189105755467703,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_067",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07067670829088689,
+          "prob_from_logprob_h": 0.716937975886417,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_068",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04774279266036744,
+          "prob_from_logprob_h": 0.7215688940091323,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_069",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.09128828557995249,
+          "prob_from_logprob_h": 0.712736467352215,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_070",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0789203227778795,
+          "prob_from_logprob_h": 0.7152620462906639,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_071",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.044323815694914385,
+          "prob_from_logprob_h": 0.722255270558732,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_072",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0501744163864011,
+          "prob_from_logprob_h": 0.7210801001258847,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_073",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06902292953512873,
+          "prob_from_logprob_h": 0.7172734698575812,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_074",
+          "conf_h": 0.5135135135135135,
+          "conf_not_h": 0.4864864864864865,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07324589999694935,
+          "prob_from_logprob_h": 0.7164162990069418,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_075",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.12924461551084274,
+          "prob_from_logprob_h": 0.7049028534842349,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_076",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05785903373863956,
+          "prob_from_logprob_h": 0.7195319196916798,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_077",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06860008209004179,
+          "prob_from_logprob_h": 0.7173592121591253,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_078",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08712128422718739,
+          "prob_from_logprob_h": 0.7135888756541625,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_079",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0539370818623801,
+          "prob_from_logprob_h": 0.7203227101983259,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_080",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.061947095291401175,
+          "prob_from_logprob_h": 0.718706185506832,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_081",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.12076995739623621,
+          "prob_from_logprob_h": 0.7066626415998496,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_082",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05470986919879893,
+          "prob_from_logprob_h": 0.7201669995778336,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_083",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04094685634784644,
+          "prob_from_logprob_h": 0.7229321886638285,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_084",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04749747297713507,
+          "prob_from_logprob_h": 0.7216181778268997,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_085",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.14810940639518813,
+          "prob_from_logprob_h": 0.7009635871821651,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_086",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05630552624703466,
+          "prob_from_logprob_h": 0.719845319468478,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_087",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.10842007656885345,
+          "prob_from_logprob_h": 0.709216105664714,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_088",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05732921697297492,
+          "prob_from_logprob_h": 0.7196388273170377,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_089",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.042717084176638435,
+          "prob_from_logprob_h": 0.7225774699421179,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_090",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.04439494858570676,
+          "prob_from_logprob_h": 0.7222410008906772,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_091",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06745456969636543,
+          "prob_from_logprob_h": 0.7175914126529985,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_092",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.08090171994552814,
+          "prob_from_logprob_h": 0.7148583384252867,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_093",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07344591641106711,
+          "prob_from_logprob_h": 0.7163756611161303,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_094",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.051875323422910305,
+          "prob_from_logprob_h": 0.7207378789923894,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_095",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.06160155233952026,
+          "prob_from_logprob_h": 0.7187760378180378,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_096",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.0500687155703762,
+          "prob_from_logprob_h": 0.7211013585566045,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_097",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.07075513780895669,
+          "prob_from_logprob_h": 0.7169220592927731,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_098",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.09777818405192057,
+          "prob_from_logprob_h": 0.7114058724010618,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        },
+        {
+          "item_id": "gsm8k_099",
+          "conf_h": 0.5,
+          "conf_not_h": 0.5,
+          "delta_add": 0.0,
+          "verdict_h": true,
+          "logprob_h": -0.05189339810639081,
+          "prob_from_logprob_h": 0.720734240999775,
+          "extraction_audit_h": {
+            "regex_confidence": null,
+            "conf_gap": null
+          },
+          "ground_truth": 1
+        }
+      ]
+    }
+  },
+  "probe2_models": {},
+  "errors": {
+    "zai-org_GLM-5.3": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=8192 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema."
+  }
+}

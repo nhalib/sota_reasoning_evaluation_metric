@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional, Sequence
 # Add project root (probes/) to path so the suite runs from within probes/
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from common.config import DEFAULT_SEED, DEFAULT_TIMEOUT, DEFAULT_TOKEN_CEILING
 from common.models import (
     BayesianHarnessModel,
     OpenAICompatibleModel
@@ -36,11 +37,14 @@ class SuiteConfig:
     mode: str = "all"                       # all | probe1 | probe2
     dataset: str = "standard"               # standard | seed
     n_items: int = 20
+    seed: Optional[int] = DEFAULT_SEED
     include_scaffold: bool = True
     api_url: Optional[str] = None
     api_key: Optional[str] = None
     temperature: float = 0.0
     max_tokens: int = 384
+    timeout: float = DEFAULT_TIMEOUT
+    token_ceiling: int = DEFAULT_TOKEN_CEILING
 
     def validate(self):
         if self.mode not in ("all", "probe1", "probe2"):
@@ -75,9 +79,9 @@ def resolve_endpoint(cfg: SuiteConfig) -> SuiteConfig:
 def load_probe_datasets(cfg: SuiteConfig) -> tuple:
     """Loads the P1/P2 item sets once per sweep. Returns (p1_items, p2_items)."""
     if cfg.dataset == "standard":
-        print(f"[*] Loading Standard Benchmarks ({cfg.n_items} items each: GSM8K for P1, ProntoQA for P2)...")
-        p1_dataset = load_standard_gsm8k(n_items=cfg.n_items) if cfg.mode in ("all", "probe1") else []
-        p2_dataset = load_standard_prontoqa(n_items=cfg.n_items) if cfg.mode in ("all", "probe2") else []
+        print(f"[*] Loading Standard Benchmarks ({cfg.n_items} items each: GSM8K for P1, ProntoQA for P2, seed={cfg.seed})...")
+        p1_dataset = load_standard_gsm8k(n_items=cfg.n_items, seed=cfg.seed) if cfg.mode in ("all", "probe1") else []
+        p2_dataset = load_standard_prontoqa(n_items=cfg.n_items, seed=cfg.seed) if cfg.mode in ("all", "probe2") else []
     else:
         print("[*] Loading Handcrafted Seed Datasets...")
         p1_dataset = PROBE1_DATASET
@@ -94,6 +98,8 @@ def build_models(cfg: SuiteConfig, model_id: str) -> list:
         model_id=model_id,
         temperature=cfg.temperature,
         max_tokens=cfg.max_tokens,
+        timeout=cfg.timeout,
+        token_ceiling=cfg.token_ceiling,
     )
     models = [api_model]
     if cfg.include_scaffold:
@@ -162,7 +168,11 @@ def run_suite(
             "mode": cfg.mode,
             "dataset": cfg.dataset,
             "n_items": cfg.n_items,
+            "seed": cfg.seed,
             "temperature": cfg.temperature,
+            "max_tokens": cfg.max_tokens,
+            "timeout": cfg.timeout,
+            "token_ceiling": cfg.token_ceiling,
             "include_scaffold": cfg.include_scaffold,
             "api_url": cfg.api_url,
             "model_ids": list(model_ids),

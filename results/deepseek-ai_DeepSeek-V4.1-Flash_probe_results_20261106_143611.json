@@ -1,0 +1,20 @@
+{
+  "run_config": {
+    "mode": "all",
+    "dataset": "standard",
+    "n_items": 100,
+    "seed": 87,
+    "temperature": 0.0,
+    "include_scaffold": true,
+    "api_url": "https://api.deepinfra.com/v1/openai",
+    "model_ids": [
+      "deepseek-ai/DeepSeek-V4.1-Flash"
+    ]
+  },
+  "probe1_models": {},
+  "probe2_models": {},
+  "errors": {
+    "deepseek-ai_DeepSeek-V4.1-Flash": "TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+    "deepseek-ai_DeepSeek-V4.1-Flash_+_Bayesian_Harness": "TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema."
+  }
+}

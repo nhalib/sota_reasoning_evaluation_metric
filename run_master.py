@@ -17,11 +17,18 @@ import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Optional, Tuple
 
 # Add project root (probes/) to path so the controller runs from within probes/
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common.config import RESULTS_DIR
+from common.config import (
+    RESULTS_DIR,
+    DEFAULT_SEED,
+    DEFAULT_TIMEOUT,
+    DEFAULT_TOKEN_CEILING,
+    get_timestamp_str,
+)
 from common.models import BaseReasoningModel
 from run_probes import (
     SuiteConfig,
@@ -33,6 +40,62 @@ from run_probes import (
 
 def slugify(model_id: str) -> str:
     return BaseReasoningModel._sanitized(model_id)
+
+
+def resolve_model_output_paths(
+    slug: str,
+    output_dir: Path,
+    timestamp: Optional[str] = None,
+    timestamp_dir: bool = False,
+) -> tuple[Path, Optional[Path]]:
+    """Resolves output file path for a model.
+
+    Returns (primary_path, latest_path):
+    - primary_path: path to write the run output (timestamped if timestamp is provided).
+    - latest_path: canonical un-timestamped file path (updated alongside primary if timestamped).
+    """
+    target_dir = output_dir / timestamp if (timestamp and timestamp_dir) else output_dir
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    if timestamp:
+        primary_path = target_dir / f"{slug}_probe_results_{timestamp}.json"
+        latest_path = target_dir / f"{slug}_probe_results.json"
+        return primary_path, latest_path
+    else:
+        primary_path = target_dir / f"{slug}_probe_results.json"
+        return primary_path, None
+
+
+def resolve_sweep_output_paths(
+    output_json: Optional[str],
+    output_dir: Path,
+    timestamp: Optional[str] = None,
+    timestamp_dir: bool = False,
+) -> tuple[Path, Optional[Path]]:
+    """Resolves output file path for the sweep manifest.
+
+    Returns (primary_path, latest_path).
+    """
+    target_dir = output_dir / timestamp if (timestamp and timestamp_dir) else output_dir
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    if output_json:
+        custom_path = Path(output_json)
+        custom_path.parent.mkdir(parents=True, exist_ok=True)
+        if timestamp:
+            stem = custom_path.stem
+            suffix = custom_path.suffix or ".json"
+            ts_path = custom_path.parent / f"{stem}_{timestamp}{suffix}"
+            return ts_path, custom_path
+        return custom_path, None
+
+    if timestamp:
+        primary_path = target_dir / f"sweep_results_{timestamp}.json"
+        latest_path = target_dir / "sweep_results.json"
+        return primary_path, latest_path
+    else:
+        primary_path = target_dir / "sweep_results.json"
+        return primary_path, None
 
 
 def load_specs(args) -> list:
@@ -63,9 +126,13 @@ def load_specs(args) -> list:
                 entry = {"model_id": entry}
             if not isinstance(entry, dict) or not entry.get("model_id"):
                 raise ValueError(f"{models_file}: entry missing 'model_id': {entry!r}")
-            # Inherit default_api_url from models.json if not explicitly specified
-            if "api_url" not in entry and "default_api_url" in file_defaults:
+            # Inherit file-level defaults from models.json if not overridden by CLI or spec
+            if "api_url" not in entry and "default_api_url" in file_defaults and not getattr(args, "api_url", None):
                 entry["api_url"] = file_defaults["default_api_url"]
+            if "timeout" not in entry and "default_timeout" in file_defaults and getattr(args, "timeout", None) is None:
+                entry["timeout"] = file_defaults["default_timeout"]
+            if "token_ceiling" not in entry and "default_token_ceiling" in file_defaults and getattr(args, "token_ceiling", None) is None:
+                entry["token_ceiling"] = file_defaults["default_token_ceiling"]
             specs.append(entry)
 
     for model_id in getattr(args, "model", []):
@@ -100,11 +167,14 @@ def make_cfg(spec: dict, defaults) -> SuiteConfig:
         mode=spec.get("mode", defaults.mode),
         dataset=spec.get("dataset", defaults.dataset),
         n_items=spec.get("n_items", defaults.n_items),
+        seed=spec.get("seed", getattr(defaults, "seed", DEFAULT_SEED)),
         include_scaffold=include_scaffold,
         api_url=spec.get("api_url", defaults.api_url),
         api_key=spec.get("api_key", defaults.api_key),
         temperature=spec.get("temperature", defaults.temperature),
         max_tokens=spec.get("max_tokens", defaults.max_tokens),
+        timeout=spec.get("timeout", getattr(defaults, "timeout", DEFAULT_TIMEOUT)),
+        token_ceiling=spec.get("token_ceiling", getattr(defaults, "token_ceiling", DEFAULT_TOKEN_CEILING)),
     )
     return resolve_endpoint(cfg)
 
@@ -136,10 +206,13 @@ def model_config_view(cfg: SuiteConfig) -> dict:
         "mode": cfg.mode,
         "dataset": cfg.dataset,
         "n_items": cfg.n_items,
+        "seed": cfg.seed,
         "api_url": cfg.api_url,
         "include_scaffold": cfg.include_scaffold,
         "temperature": cfg.temperature,
         "max_tokens": cfg.max_tokens,
+        "timeout": cfg.timeout,
+        "token_ceiling": cfg.token_ceiling,
     }
 
 
@@ -152,35 +225,67 @@ def main():
     parser.add_argument("--mode", choices=["all", "probe1", "probe2"], default="all")
     parser.add_argument("--dataset", choices=["standard", "seed"], default="standard")
     parser.add_argument("--n-items", type=int, default=20)
+    parser.add_argument("--seed", type=int, default=DEFAULT_SEED,
+                        help=f"Random seed for sampling benchmark items (default: {DEFAULT_SEED}; pass -1 for sequential)")
     parser.add_argument("--api-url", default=None, help="Shared endpoint URL (per-model override via JSON)")
     parser.add_argument("--api-key", default=None, help="Shared endpoint key (never written to any file)")
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-tokens", type=int, default=384)
+    parser.add_argument("--timeout", type=float, default=None,
+                        help=f"HTTP client read timeout in seconds (default: {DEFAULT_TIMEOUT})")
+    parser.add_argument("--token-ceiling", type=int, default=None,
+                        help=f"Max tokens ceiling for truncation retry escalation (default: {DEFAULT_TOKEN_CEILING})")
     parser.add_argument("--no-scaffold", action="store_true", help="Skip the Bayesian harness condition")
     parser.add_argument("--fail-fast", action="store_true", help="Stop the sweep after the first failed model")
     parser.add_argument("--dry-run", action="store_true", help="Print the planned model list without executing")
-    parser.add_argument("--output-json", default=str(RESULTS_DIR / "sweep_results.json"),
-                        help="Combined sweep manifest path")
+    parser.add_argument("--output-json", default=None,
+                        help="Combined sweep manifest path (default: <output-dir>/sweep_results[_<timestamp>].json)")
+    parser.add_argument("--output-dir", default=str(RESULTS_DIR),
+                        help=f"Base output directory for results (default: {RESULTS_DIR})")
+    parser.add_argument("--timestamp", action=argparse.BooleanOptionalAction, default=True,
+                        help="Save output files with timestamped filenames (default: enabled)")
+    parser.add_argument("--timestamp-dir", action="store_true",
+                        help="Save outputs into a dedicated timestamped subdirectory inside output-dir")
     args = parser.parse_args()
 
     specs = load_specs(args)
 
+    effective_seed = None if args.seed == -1 else args.seed
+    effective_timeout = args.timeout if args.timeout is not None else DEFAULT_TIMEOUT
+    effective_token_ceiling = args.token_ceiling if args.token_ceiling is not None else DEFAULT_TOKEN_CEILING
+
     d = SimpleNamespace(
         mode=args.mode, dataset=args.dataset, n_items=args.n_items,
+        seed=effective_seed,
         api_url=args.api_url, api_key=args.api_key,
         temperature=args.temperature, max_tokens=args.max_tokens,
+        timeout=effective_timeout, token_ceiling=effective_token_ceiling,
         include_scaffold=not args.no_scaffold,
+    )
+
+    output_dir = Path(args.output_dir)
+    run_timestamp = get_timestamp_str() if args.timestamp else None
+    manifest_path, latest_manifest_path = resolve_sweep_output_paths(
+        args.output_json, output_dir, run_timestamp, args.timestamp_dir
     )
 
     print("==========================================================================")
     print("MASTER CONTROLLER: MULTI-MODEL PROBE SWEEP")
     print(f"Models ({len(specs)}): " + ", ".join(s["model_id"] for s in specs))
+    if run_timestamp:
+        print(f"Run Timestamp: {run_timestamp}")
+    print(f"Output Directory: {output_dir}")
+    print(f"Sampling Seed: {effective_seed}")
     print("==========================================================================")
 
     if args.dry_run:
         for spec in specs:
             cfg = make_cfg(spec, d)
-            print(f"[dry-run] {spec['model_id']} -> {slugify(spec['model_id'])}_probe_results.json | {model_config_view(cfg)}")
+            out_p, _ = resolve_model_output_paths(
+                slugify(spec["model_id"]), output_dir, run_timestamp, args.timestamp_dir
+            )
+            print(f"[dry-run] {spec['model_id']} -> {out_p.name} | {model_config_view(cfg)}")
+        print(f"[dry-run] Sweep manifest -> {manifest_path.name}")
         return
 
     cfgs = [make_cfg(s, d) for s in specs]
@@ -190,24 +295,30 @@ def main():
     datasets_cache = {}
 
     def get_dataset(cfg: SuiteConfig):
-        dkey = (cfg.dataset, cfg.mode, cfg.n_items)
+        dkey = (cfg.dataset, cfg.mode, cfg.n_items, cfg.seed)
         if dkey not in datasets_cache:
-            print("\n[*] Loading datasets (shared across compatible models)...")
+            print(f"\n[*] Loading datasets (shared across compatible models, seed={cfg.seed})...")
             datasets_cache[dkey] = load_probe_datasets(cfg)
         return datasets_cache[dkey]
 
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "run_timestamp": run_timestamp,
         "sweep_config": {
             "model_ids": [s["model_id"] for s in specs],
             "defaults": {
                 "mode": d.mode,
                 "dataset": d.dataset,
                 "n_items": d.n_items,
+                "seed": d.seed,
                 "api_url": d.api_url,
                 "include_scaffold": d.include_scaffold,
                 "temperature": d.temperature,
                 "max_tokens": d.max_tokens,
+                "timeout": d.timeout,
+                "token_ceiling": d.token_ceiling,
+                "timestamp": args.timestamp,
+                "timestamp_dir": args.timestamp_dir,
             },
         },
         "models": [],
@@ -218,7 +329,9 @@ def main():
         model_id = spec["model_id"]
         cfg = cfgs[idx - 1]
         slug = slugify(model_id)
-        out_path = RESULTS_DIR / f"{slug}_probe_results.json"
+        out_path, latest_path = resolve_model_output_paths(
+            slug, output_dir, run_timestamp, args.timestamp_dir
+        )
 
         print(f"\n[{idx}/{len(specs)}] {model_id}")
         t0 = time.monotonic()
@@ -227,6 +340,7 @@ def main():
             "slug": slug,
             "config": model_config_view(cfg),
             "output_file": str(out_path),
+            "latest_file": str(latest_path) if latest_path else None,
         }
 
         try:
@@ -247,6 +361,9 @@ def main():
             entry["summary"] = summarize(payload)
             with open(out_path, "w", encoding="utf-8") as f:
                 json.dump(payload, f, indent=2)
+            if latest_path and latest_path != out_path:
+                with open(latest_path, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, indent=2)
             print(f"    [{entry['status']}] {digest(entry['summary'])}")
         except Exception as exc:
             entry["exit_code"] = 1
@@ -266,13 +383,20 @@ def main():
             break
 
     manifest["failures"] = failures
-    out_path = Path(args.output_json)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
+    manifest["sweep_manifest_file"] = str(manifest_path)
+    if latest_manifest_path and latest_manifest_path != manifest_path:
+        manifest["latest_manifest_file"] = str(latest_manifest_path)
+
+    with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
+    if latest_manifest_path and latest_manifest_path != manifest_path:
+        with open(latest_manifest_path, "w", encoding="utf-8") as f:
+            json.dump(manifest, f, indent=2)
 
     ok = sum(1 for e in manifest["models"] if e["status"] == "ok")
-    print(f"\n[+] Sweep manifest saved to: {out_path}")
+    print(f"\n[+] Sweep manifest saved to: {manifest_path}")
+    if latest_manifest_path and latest_manifest_path != manifest_path:
+        print(f"[+] Latest sweep manifest updated at: {latest_manifest_path}")
     print(f"[+] {ok}/{len(specs)} model(s) completed successfully"
           + (f"; failures: {', '.join(failures)}" if failures else "."))
     if failures:

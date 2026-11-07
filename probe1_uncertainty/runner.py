@@ -17,7 +17,7 @@ def format_prompt(premises: str, hypothesis: str) -> str:
         "Question: Is this hypothesis true? Evaluate the premises and provide your conclusion.\n"
         "Respond with a JSON object with fields: "
         "verdict (boolean), confidence (number in [0,1] = your subjective probability that the hypothesis is true), "
-        "rationale (string)."
+        "rationale (string). Keep your rationale concise so the output completes strictly within the token budget."
     )
 
 

@@ -104,15 +104,22 @@ model only):
 ```
 
 Overridable per-model keys: `mode`, `dataset`, `n_items`, `api_url`, `api_key`,
-`temperature`, `max_tokens`, `include_scaffold` / `no_scaffold`.
+`temperature`, `max_tokens`, `timeout`, `token_ceiling`, `include_scaffold` / `no_scaffold`.
+Top-level defaults in `models.json`: `default_api_url`, `default_timeout`, `default_token_ceiling`.
 
 Controller flags: `--model` (repeatable) and `--models-file` select the models;
 `--mode`, `--dataset`, `--n-items`, `--api-url`, `--api-key`,
-`--temperature`, `--max-tokens`, `--no-scaffold` are sweep
-defaults. Others: `--dry-run` (print resolved per-model configs; the API key is
-never written to any output file), `--fail-fast` (stop after first failure),
-`--output-json` (combined manifest path). Exit code is non-zero if any model
-fails.
+`--temperature`, `--max-tokens`, `--timeout`, `--token-ceiling`, `--no-scaffold` are sweep
+defaults. Others:
+* `--timeout <float>`: HTTP client read timeout in seconds (default: `180.0`; configurable via `PROBE_TIMEOUT`).
+* `--token-ceiling <int>`: maximum token ceiling for truncation retry escalation (default: `16384`; configurable via `COMPLETION_TOKEN_CEILING`).
+* `--seed <int>`: random seed for deterministic sampling from GSM8K and ProntoQA (default: `42`; pass `-1` for sequential slice).
+* `--timestamp` / `--no-timestamp` (default: enabled): saves all outputs with UTC timestamps (`YYYYMMDD_HHMMSS`) while maintaining un-timestamped canonical copies for downstream tooling.
+* `--timestamp-dir`: saves runs into dedicated timestamped subdirectories inside the output directory.
+* `--output-dir`: target directory for per-model and sweep outputs (default: `results/`).
+* `--output-json`: custom combined manifest path.
+* `--dry-run`: print planned model list and output destinations without making API calls.
+* `--fail-fast`: abort sweep immediately after the first model failure. Exit code is non-zero if any model fails.
 
 ---
 
@@ -159,8 +166,10 @@ probes/
 │   ├── clingo_control.py              # Classical control: ASP Clingo solver (0% flips)
 │   └── runner.py                      # Probe 2 execution logic
 ├── results/
-│   ├── <slug>_probe_results.json      # Raw per-model outputs (written by run_master.py)
-│   ├── sweep_results.json             # Combined sweep manifest
+│   ├── <slug>_probe_results_<ts>.json # Timestamped per-model outputs (written by run_master.py)
+│   ├── <slug>_probe_results.json      # Canonical latest copy
+│   ├── sweep_results_<ts>.json        # Timestamped combined sweep manifest
+│   ├── sweep_results.json             # Canonical latest manifest
 │   └── legacy/                        # Pre-schema artifacts, kept for provenance only
 │       └── README.md                  # Why they are not reproducible / which numbers are bad
 └── tests/

@@ -12,7 +12,8 @@ def format_prompt(premises: str, question: str) -> str:
         f"Premises:\n{premises}\n\n"
         f"Question:\n{question}\n\n"
         "Respond with a JSON object with fields: "
-        "verdict (boolean: true for Yes, false for No), rationale (string)."
+        "verdict (boolean: true for Yes, false for No), rationale (string). "
+        "Keep your rationale concise so the output completes strictly within the token budget."
     )
 
 

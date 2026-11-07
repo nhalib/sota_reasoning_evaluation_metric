@@ -33,10 +33,16 @@ class Probe2Answer(BaseModel):
 
 
 def _strict_schema(model: type[BaseModel]) -> dict:
-    """Builds an OpenAI/vLLM strict json_schema: no extras, every field required."""
+    """Builds an OpenAI/vLLM strict json_schema: no extras.
+
+    ``required`` lists only the fields that genuinely have no default, so
+    optional ones (e.g. ``rationale: Optional[str] = None``) stay out of the
+    grammar. Forcing every field to be required makes models emit long free-text
+    rationales that can overflow ``max_tokens`` and truncate the JSON mid-object.
+    """
     schema = model.model_json_schema()
     schema["additionalProperties"] = False
-    schema["required"] = list(schema.get("properties", {}).keys())
+    schema["required"] = [name for name, field in model.model_fields.items() if field.is_required()]
     return schema
 
 

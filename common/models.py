@@ -7,12 +7,30 @@ from typing import Optional, Dict, Any, Type
 
 from pydantic import BaseModel
 
-from .config import CONFIDENCE_PATTERN, PROBABILITY_PATTERN, BOXED_ANSWER_PATTERN, ANSWER_PATTERN
+from .config import (
+    CONFIDENCE_PATTERN,
+    PROBABILITY_PATTERN,
+    BOXED_ANSWER_PATTERN,
+    ANSWER_PATTERN,
+    DEFAULT_TIMEOUT,
+    DEFAULT_TOKEN_CEILING,
+    DEFAULT_TRUNCATION_RETRIES,
+)
 from .schemas import (
     Probe1Answer,
     parse_structured,
     response_format,
 )
+
+# When a completion hits max_tokens (finish_reason == "length") the schema-
+# constrained JSON is cut off mid-object and cannot be parsed. Retry with a
+# doubled budget, bounded by a hard ceiling, before declaring the model errored.
+TRUNCATION_RETRIES = DEFAULT_TRUNCATION_RETRIES
+COMPLETION_TOKEN_CEILING = DEFAULT_TOKEN_CEILING
+
+
+class TruncatedResponseError(RuntimeError):
+    """Completion stopped at the token limit, leaving an unterminated JSON object."""
 
 
 @dataclass
@@ -127,6 +145,9 @@ class OpenAICompatibleModel(BaseReasoningModel):
         model_id: str = "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
         temperature: float = 0.0,
         max_tokens: int = 384,
+        timeout: float = DEFAULT_TIMEOUT,
+        token_ceiling: int = DEFAULT_TOKEN_CEILING,
+        truncation_retries: int = DEFAULT_TRUNCATION_RETRIES,
     ):
         super().__init__(name)
         self.base_url = base_url
@@ -134,6 +155,9 @@ class OpenAICompatibleModel(BaseReasoningModel):
         self.model_id = model_id
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.timeout = timeout
+        self.token_ceiling = token_ceiling
+        self.truncation_retries = truncation_retries
 
     def _post(self, payload: dict) -> dict:
         import httpx
@@ -152,7 +176,8 @@ class OpenAICompatibleModel(BaseReasoningModel):
         last_err = None
         for attempt in range(3):
             try:
-                with httpx.Client(timeout=90.0) as client:
+                timeout_cfg = httpx.Timeout(self.timeout, connect=min(60.0, self.timeout))
+                with httpx.Client(timeout=timeout_cfg) as client:
                     resp = client.post(f"{self.base_url}/chat/completions", json=payload, headers=headers)
                     if 400 <= resp.status_code < 500 and resp.status_code != 429:
                         raise RuntimeError(
@@ -199,11 +224,12 @@ class OpenAICompatibleModel(BaseReasoningModel):
             messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
 
+        initial_cap = min(self.max_tokens, self.token_ceiling) if self.token_ceiling > 0 else self.max_tokens
         base_payload = {
             "model": self.model_id,
             "messages": messages,
             "temperature": self.temperature,
-            "max_tokens": self.max_tokens,
+            "max_tokens": initial_cap,
         }
 
         # Optional free-form channel: the sequence-likelihood arm of Probe 1
@@ -212,12 +238,14 @@ class OpenAICompatibleModel(BaseReasoningModel):
         free_text = ""
         mean_logprob = None
         raw = None
+        logprob_truncated = False
         logprobs_requested = logprobs
         if logprobs:
             payload = {**base_payload, "logprobs": True}
             try:
                 data = self._post(payload)
                 choice = data["choices"][0]
+                logprob_truncated = choice.get("finish_reason") == "length"
                 free_text = self._compose_text(choice.get("message", {}))
                 mean_logprob = self._mean_logprob(choice)
                 raw = data
@@ -228,9 +256,26 @@ class OpenAICompatibleModel(BaseReasoningModel):
 
         # Primary channel: schema-validated answer via server-side constrained
         # decoding (strict response_format on the OpenAI-compatible endpoint).
+        # Constrained decoding guarantees well-formedness only if generation is
+        # allowed to finish; a "length" cutoff yields unterminated JSON, so bound
+        # the retry by escalating max_tokens up to the ceiling before erroring.
         payload = {**base_payload, "response_format": response_format(schema)}
-        data = self._post(payload)
-        answer_text = self._compose_text(data["choices"][0].get("message", {}))
+        for attempt in range(self.truncation_retries + 1):
+            data = self._post(payload)
+            choice = data["choices"][0]
+            if choice.get("finish_reason") != "length":
+                break
+            if attempt == self.truncation_retries or (self.token_ceiling > 0 and payload["max_tokens"] >= self.token_ceiling):
+                raise TruncatedResponseError(
+                    f"{self.name}: completion truncated at max_tokens={payload['max_tokens']} "
+                    f"(finish_reason='length') after {attempt} retry(ies); the required schema "
+                    f"or reasoning budget is too large -- raise max_tokens or trim the schema."
+                )
+            exhausted = payload["max_tokens"]  # cap that was just tried and truncated
+            next_cap = payload["max_tokens"] * 2
+            payload["max_tokens"] = min(next_cap, self.token_ceiling) if self.token_ceiling > 0 else next_cap
+            print(f"    [retry] {self.name}: truncated at {exhausted} tokens; raising cap to {payload['max_tokens']}")
+        answer_text = self._compose_text(choice.get("message", {}))
         structured = parse_structured(answer_text, schema)
         if not free_text:
             free_text = answer_text
@@ -238,6 +283,10 @@ class OpenAICompatibleModel(BaseReasoningModel):
 
         metadata: Dict[str, Any] = {"logprobs_supported": mean_logprob is not None} \
             if logprobs_requested else {}
+        if logprobs_requested and logprob_truncated:
+            # Partial CoT: the mean logprob is over a cut-off sequence, not a
+            # full completion -- flag it so the sequence-likelihood arm can drop it.
+            metadata["logprob_truncated"] = True
         if logprobs_requested and free_text:
             regex_conf = self.extract_confidence(free_text)
             regex_ans = self.extract_answer(free_text)

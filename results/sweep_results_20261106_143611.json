@@ -1,0 +1,495 @@
+{
+  "generated_at": "2026-11-06T14:36:11.643352+00:00",
+  "run_timestamp": "20261106_143611",
+  "sweep_config": {
+    "model_ids": [
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "deepseek-ai/DeepSeek-V4.1-Flash",
+      "deepseek-ai/DeepSeek-V4-Flash",
+      "zai-org/GLM-5.3",
+      "zai-org/GLM-4.7",
+      "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "mistralai/Mistral-Nemo-Instruct-2407",
+      "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "Qwen/Qwen3.8-Flash",
+      "Qwen/Qwen3.5-27B",
+      "google/gemma-3-27b-it",
+      "moonshotai/Kimi-K2.6"
+    ],
+    "defaults": {
+      "mode": "all",
+      "dataset": "standard",
+      "n_items": 100,
+      "seed": 87,
+      "api_url": null,
+      "include_scaffold": true,
+      "temperature": 0.0,
+      "max_tokens": 384,
+      "timestamp": true,
+      "timestamp_dir": false
+    }
+  },
+  "models": [
+    {
+      "model_id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "slug": "meta-llama_Llama-3.3-70B-Instruct-Turbo",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/meta-llama_Llama-3.3-70B-Instruct-Turbo_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/meta-llama_Llama-3.3-70B-Instruct-Turbo_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "meta-llama_Llama-3.3-70B-Instruct-Turbo_+_Bayesian_Harness": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {
+          "meta-llama_Llama-3.3-70B-Instruct-Turbo": {
+            "verbalized_brier": 0.1914,
+            "logprob_brier": 0.0791,
+            "additivity_violation_rate": 81.0
+          }
+        },
+        "probe2_models": {
+          "meta-llama_Llama-3.3-70B-Instruct-Turbo": {
+            "flip_rates_by_condition": {
+              "conjunct": 9.0,
+              "instantiation": 16.0,
+              "paraphrase": 12.0
+            },
+            "overall_flip_rate": 12.3
+          }
+        }
+      },
+      "duration_s": 11594.9
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "slug": "deepseek-ai_DeepSeek-V4.1-Flash",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4.1-Flash_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4.1-Flash_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "deepseek-ai_DeepSeek-V4.1-Flash": {
+          "message": "TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        },
+        "deepseek-ai_DeepSeek-V4.1-Flash_+_Bayesian_Harness": {
+          "message": "TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 1050.6
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-V4-Flash",
+      "slug": "deepseek-ai_DeepSeek-V4-Flash",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4-Flash_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4-Flash_probe_results.json",
+      "exit_code": 0,
+      "status": "ok",
+      "summary": {
+        "probe1_models": {
+          "deepseek-ai_DeepSeek-V4-Flash": {
+            "verbalized_brier": 0.0,
+            "logprob_brier": 0.0859,
+            "additivity_violation_rate": 100.0
+          },
+          "deepseek-ai_DeepSeek-V4-Flash_+_Bayesian_Harness": {
+            "verbalized_brier": 0.2501,
+            "logprob_brier": 0.0857,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {
+          "deepseek-ai_DeepSeek-V4-Flash": {
+            "flip_rates_by_condition": {
+              "conjunct": 19.0,
+              "instantiation": 8.0,
+              "paraphrase": 13.0
+            },
+            "overall_flip_rate": 13.3
+          }
+        }
+      },
+      "duration_s": 5348.1
+    },
+    {
+      "model_id": "zai-org/GLM-5.3",
+      "slug": "zai-org_GLM-5.3",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-5.3_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-5.3_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "zai-org_GLM-5.3": {
+          "message": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {
+          "zai-org_GLM-5.3_+_Bayesian_Harness": {
+            "verbalized_brier": 0.2499,
+            "logprob_brier": 0.082,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {}
+      },
+      "duration_s": 3029.8
+    },
+    {
+      "model_id": "zai-org/GLM-4.7",
+      "slug": "zai-org_GLM-4.7",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-4.7_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-4.7_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "zai-org_GLM-4.7": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        },
+        "zai-org_GLM-4.7_+_Bayesian_Harness": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 1158.4
+    },
+    {
+      "model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "slug": "mistralai_Mistral-Small-3.2-24B-Instruct-2506",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/mistralai_Mistral-Small-3.2-24B-Instruct-2506_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/mistralai_Mistral-Small-3.2-24B-Instruct-2506_probe_results.json",
+      "exit_code": 0,
+      "status": "ok",
+      "summary": {
+        "probe1_models": {
+          "mistralai_Mistral-Small-3.2-24B-Instruct-2506": {
+            "verbalized_brier": 0.0001,
+            "logprob_brier": 0.0824,
+            "additivity_violation_rate": 100.0
+          },
+          "mistralai_Mistral-Small-3.2-24B-Instruct-2506_+_Bayesian_Harness": {
+            "verbalized_brier": 0.2499,
+            "logprob_brier": 0.0821,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {
+          "mistralai_Mistral-Small-3.2-24B-Instruct-2506": {
+            "flip_rates_by_condition": {
+              "conjunct": 12.0,
+              "instantiation": 12.0,
+              "paraphrase": 15.0
+            },
+            "overall_flip_rate": 13.0
+          }
+        }
+      },
+      "duration_s": 3051.9
+    },
+    {
+      "model_id": "mistralai/Mistral-Nemo-Instruct-2407",
+      "slug": "mistralai_Mistral-Nemo-Instruct-2407",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1024
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/mistralai_Mistral-Nemo-Instruct-2407_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/mistralai_Mistral-Nemo-Instruct-2407_probe_results.json",
+      "exit_code": 0,
+      "status": "ok",
+      "summary": {
+        "probe1_models": {
+          "mistralai_Mistral-Nemo-Instruct-2407": {
+            "verbalized_brier": 0.8202,
+            "logprob_brier": 0.0883,
+            "additivity_violation_rate": 50.0
+          },
+          "mistralai_Mistral-Nemo-Instruct-2407_+_Bayesian_Harness": {
+            "verbalized_brier": 0.8483,
+            "logprob_brier": 0.0881,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {
+          "mistralai_Mistral-Nemo-Instruct-2407": {
+            "flip_rates_by_condition": {
+              "conjunct": 16.0,
+              "instantiation": 20.0,
+              "paraphrase": 15.0
+            },
+            "overall_flip_rate": 17.0
+          }
+        }
+      },
+      "duration_s": 7706.0
+    },
+    {
+      "model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "slug": "nvidia_NVIDIA-Nemotron-3.5-Super-VL",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/nvidia_NVIDIA-Nemotron-3.5-Super-VL_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/nvidia_NVIDIA-Nemotron-3.5-Super-VL_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "nvidia_NVIDIA-Nemotron-3.5-Super-VL": {
+          "message": "TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        },
+        "nvidia_NVIDIA-Nemotron-3.5-Super-VL_+_Bayesian_Harness": {
+          "message": "TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 2095.4
+    },
+    {
+      "model_id": "Qwen/Qwen3.8-Flash",
+      "slug": "Qwen_Qwen3.8-Flash",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1024
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/Qwen_Qwen3.8-Flash_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/Qwen_Qwen3.8-Flash_probe_results.json",
+      "exit_code": 0,
+      "status": "ok",
+      "summary": {
+        "probe1_models": {
+          "Qwen_Qwen3.8-Flash": {
+            "verbalized_brier": 0.0012,
+            "logprob_brier": 0.0835,
+            "additivity_violation_rate": 49.0
+          },
+          "Qwen_Qwen3.8-Flash_+_Bayesian_Harness": {
+            "verbalized_brier": 0.095,
+            "logprob_brier": 0.0839,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {
+          "Qwen_Qwen3.8-Flash": {
+            "flip_rates_by_condition": {
+              "conjunct": 3.0,
+              "instantiation": 0.0,
+              "paraphrase": 5.0
+            },
+            "overall_flip_rate": 2.7
+          }
+        }
+      },
+      "duration_s": 8413.8
+    },
+    {
+      "model_id": "Qwen/Qwen3.5-27B",
+      "slug": "Qwen_Qwen3.5-27B",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/Qwen_Qwen3.5-27B_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/Qwen_Qwen3.5-27B_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "Qwen_Qwen3.5-27B": {
+          "message": "TruncatedResponseError: Qwen_Qwen3.5-27B: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: Qwen_Qwen3.5-27B: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        },
+        "Qwen_Qwen3.5-27B_+_Bayesian_Harness": {
+          "message": "TruncatedResponseError: Qwen_Qwen3.5-27B: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 253, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: Qwen_Qwen3.5-27B: completion truncated at max_tokens=6144 (finish_reason='length') after 2 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 2546.5
+    },
+    {
+      "model_id": "google/gemma-3-27b-it",
+      "slug": "google_gemma-3-27b-it",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/google_gemma-3-27b-it_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/google_gemma-3-27b-it_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "google_gemma-3-27b-it": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        },
+        "google_gemma-3-27b-it_+_Bayesian_Harness": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 4901.0
+    },
+    {
+      "model_id": "moonshotai/Kimi-K2.6",
+      "slug": "moonshotai_Kimi-K2.6",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 1536
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/moonshotai_Kimi-K2.6_probe_results_20261106_143611.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/moonshotai_Kimi-K2.6_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "moonshotai_Kimi-K2.6": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        },
+        "moonshotai_Kimi-K2.6_+_Bayesian_Harness": {
+          "message": "RuntimeError: API request failed after 3 attempts: The read operation timed out",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 103, in handle_request\n    return self._connection.handle_request(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 136, in handle_request\n    raise exc\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 106, in handle_request\n    ) = self._receive_response_headers(**kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 177, in _receive_response_headers\n    event = self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_sync/http11.py\", line 217, in _receive_event\n    data = self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 126, in read\n    with map_exceptions(exc_map):\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 166, in _post\n    resp = client.post(f\"{self.base_url}/chat/completions\", json=payload, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1144, in post\n    return self.request(\n           ^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/vasily/krono/fofo/fofo_12env/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ReadTimeout: The read operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 150, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 111, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 114, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 248, in generate\n    data = self._post(payload)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 176, in _post\n    raise RuntimeError(f\"API request failed after 3 attempts: {last_err}\") from last_err\nRuntimeError: API request failed after 3 attempts: The read operation timed out\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 1413.1
+    }
+  ],
+  "failures": [
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "deepseek-ai/DeepSeek-V4.1-Flash",
+    "zai-org/GLM-5.3",
+    "zai-org/GLM-4.7",
+    "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "Qwen/Qwen3.5-27B",
+    "google/gemma-3-27b-it",
+    "moonshotai/Kimi-K2.6"
+  ],
+  "sweep_manifest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/sweep_results_20261106_143611.json",
+  "latest_manifest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/sweep_results.json"
+}
