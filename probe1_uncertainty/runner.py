@@ -4,7 +4,7 @@ import math
 from typing import Dict, Any, List
 import numpy as np
 
-from common.models import BaseReasoningModel
+from common.models import BaseReasoningModel, TruncatedResponseError
 from common.metrics import brier_score, additivity_violation
 from common.schemas import Probe1Answer
 from .dataset import Probe1Item, PROBE1_DATASET
@@ -15,9 +15,8 @@ def format_prompt(premises: str, hypothesis: str) -> str:
         f"Premises:\n{premises}\n\n"
         f"Hypothesis:\n{hypothesis}\n\n"
         "Question: Is this hypothesis true? Evaluate the premises and provide your conclusion.\n"
-        "Respond with a JSON object with fields: "
-        "verdict (boolean), confidence (number in [0,1] = your subjective probability that the hypothesis is true), "
-        "rationale (string). Keep your rationale concise so the output completes strictly within the token budget."
+        "Conclude thinking concisely. Respond with a JSON object with fields: "
+        "verdict (boolean), confidence (number in [0,1] = your subjective probability that the hypothesis is true)."
     )
 
 
@@ -32,51 +31,58 @@ def evaluate_model_probe1(
     item_records = []
 
     for item in dataset:
-        # 1. Query for Hypothesis H (schema-validated; logprob channel stays unconstrained)
-        prompt_h = format_prompt(item.premises, item.hypothesis_h)
-        out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)
-        conf_h = out_h.verbalized_confidence
-        # Map logprob to probability space [0, 1] via logistic sigmoid: sigma(logprob + 1.0).
-        # None when the endpoint cannot provide token logprobs (no fake placeholder).
-        prob_from_logprob_h = (
-            1.0 / (1.0 + math.exp(-min(max(out_h.token_logprob + 1.0, -5.0), 5.0)))
-            if out_h.token_logprob is not None else None
-        )
+        try:
+            # 1. Query for Hypothesis H (schema-validated; logprob channel stays unconstrained)
+            prompt_h = format_prompt(item.premises, item.hypothesis_h)
+            out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)
+            conf_h = out_h.verbalized_confidence
+            # Map logprob to probability space [0, 1] via logistic sigmoid: sigma(logprob + 1.0).
+            # None when the endpoint cannot provide token logprobs (no fake placeholder).
+            prob_from_logprob_h = (
+                1.0 / (1.0 + math.exp(-min(max(out_h.token_logprob + 1.0, -5.0), 5.0)))
+                if out_h.token_logprob is not None else None
+            )
 
-        # 2. Query for Hypothesis Not H (mutually exclusive complement)
-        prompt_not_h = format_prompt(item.premises, item.hypothesis_not_h)
-        out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)
-        conf_not_h = out_not_h.verbalized_confidence
+            # 2. Query for Hypothesis Not H (mutually exclusive complement)
+            prompt_not_h = format_prompt(item.premises, item.hypothesis_not_h)
+            out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)
+            conf_not_h = out_not_h.verbalized_confidence
 
-        # If evaluating a Bayesian harness scaffold, the harness normalizes over the binary partition
-        if getattr(model, "is_scaffold", False) or hasattr(model, "base_model"):
-            total_mass = conf_h + conf_not_h
-            if total_mass > 0:
-                conf_h = conf_h / total_mass
-                conf_not_h = 1.0 - conf_h
+            # If evaluating a Bayesian harness scaffold, the harness normalizes over the binary partition
+            if getattr(model, "is_scaffold", False) or hasattr(model, "base_model"):
+                total_mass = conf_h + conf_not_h
+                if total_mass > 0:
+                    conf_h = conf_h / total_mass
+                    conf_not_h = 1.0 - conf_h
 
-        # Record metrics
-        verbalized_probs.append(conf_h)
-        logprob_probs.append(prob_from_logprob_h)
-        ground_truths.append(item.ground_truth_h)
+            # Record metrics
+            verbalized_probs.append(conf_h)
+            logprob_probs.append(prob_from_logprob_h)
+            ground_truths.append(item.ground_truth_h)
 
-        pairs.append((conf_h, conf_not_h))
-        delta_add = additivity_violation(conf_h, conf_not_h)
+            pairs.append((conf_h, conf_not_h))
+            delta_add = additivity_violation(conf_h, conf_not_h)
 
-        item_records.append({
-            "item_id": item.item_id,
-            "conf_h": conf_h,
-            "conf_not_h": conf_not_h,
-            "delta_add": delta_add,
-            "verdict_h": out_h.structured.verdict,
-            "logprob_h": out_h.token_logprob,
-            "prob_from_logprob_h": prob_from_logprob_h,
-            "extraction_audit_h": {
-                k: (out_h.metadata or {}).get(k)
-                for k in ("regex_confidence", "conf_gap")
-            },
-            "ground_truth": item.ground_truth_h
-        })
+            item_records.append({
+                "item_id": item.item_id,
+                "conf_h": conf_h,
+                "conf_not_h": conf_not_h,
+                "delta_add": delta_add,
+                "verdict_h": out_h.structured.verdict,
+                "logprob_h": out_h.token_logprob,
+                "prob_from_logprob_h": prob_from_logprob_h,
+                "extraction_audit_h": {
+                    k: (out_h.metadata or {}).get(k)
+                    for k in ("regex_confidence", "conf_gap")
+                },
+                "ground_truth": item.ground_truth_h
+            })
+        except TruncatedResponseError as e:
+            print(f"    [warn] {model.name}: item {item.item_id} truncated ({e}); skipping item")
+            continue
+
+    if not item_records:
+        raise TruncatedResponseError(f"{model.name}: all items truncated; no items could be scored.")
 
     # Summary statistics
     brier_verb = brier_score(verbalized_probs, ground_truths)

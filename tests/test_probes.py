@@ -112,14 +112,14 @@ def test_schema_parsing():
     with pytest.raises(ExtractionError):
         parse_structured("Final Answer: True", Probe1Answer)
 
-    # Strict response_format: only genuinely required fields (no Optional ones),
-    # so a model can return a minimal object without overflowing max_tokens.
+    # Strict response_format: trimmed schema excludes rationale from properties
+    # so the grammar physically forbids verbose explanations inside the JSON.
     rf = response_format(Probe1Answer)
     schema = rf["json_schema"]["schema"]
     assert rf["json_schema"]["strict"] is True
     assert set(schema["required"]) == {"verdict", "confidence"}
     assert "rationale" not in schema["required"]
-    assert "rationale" in schema["properties"]
+    assert "rationale" not in schema.get("properties", {})
     assert schema["additionalProperties"] is False
 
     # Probe2 verdict-only schema
@@ -396,6 +396,66 @@ def test_timeout_and_token_ceiling_config():
         m_escalate.generate("prompt", Probe1Answer)
     # Expected progression: 1000 -> 2000 -> 3500 (capped by token_ceiling) -> TruncatedResponseError
     assert caps == [1000, 2000, 3500]
+
+
+def test_item_level_truncation_resilience():
+    """Verify that a single truncated item does not crash evaluate_model_probe1 or evaluate_model_probe2."""
+    from common.models import BaseReasoningModel, ModelOutput, TruncatedResponseError
+    from common.schemas import Probe1Answer, Probe2Answer
+    from probe1_uncertainty.dataset import Probe1Item
+    from probe2_monotonicity.dataset import Probe2Item
+    from probe1_uncertainty.runner import evaluate_model_probe1
+    from probe2_monotonicity.runner import evaluate_model_probe2
+
+    class FlakyModel(BaseReasoningModel):
+        def __init__(self):
+            super().__init__("flaky")
+            self.calls = 0
+
+        def generate(self, prompt, schema, system_prompt=None, logprobs=False):
+            self.calls += 1
+            # Truncate on the 2nd item
+            if "item_bad" in prompt:
+                raise TruncatedResponseError("Truncated on item_bad")
+            if schema == Probe1Answer:
+                return ModelOutput(
+                    text='{"verdict": true, "confidence": 0.8}',
+                    verbalized_confidence=0.8,
+                    token_logprob=-0.2,
+                    extracted_answer="True",
+                    structured=Probe1Answer(verdict=True, confidence=0.8),
+                )
+            return ModelOutput(
+                text='{"verdict": true}',
+                verbalized_confidence=1.0,
+                token_logprob=None,
+                extracted_answer="yes",
+                structured=Probe2Answer(verdict=True),
+            )
+
+    model = FlakyModel()
+    p1_items = [
+        Probe1Item(item_id="item_good1", premises="good1", hypothesis_h="good1_h", hypothesis_not_h="good1_nh", ground_truth_h=1),
+        Probe1Item(item_id="item_bad", premises="item_bad", hypothesis_h="bad_h", hypothesis_not_h="bad_nh", ground_truth_h=1),
+        Probe1Item(item_id="item_good2", premises="good2", hypothesis_h="good2_h", hypothesis_not_h="good2_nh", ground_truth_h=1),
+    ]
+
+    p1_res = evaluate_model_probe1(model, p1_items)
+    # 2 out of 3 succeeded
+    assert len(p1_res["records"]) == 2
+    assert p1_res["records"][0]["item_id"] == "item_good1"
+    assert p1_res["records"][1]["item_id"] == "item_good2"
+
+    p2_items = [
+        Probe2Item(item_id="item_good1", base_premises="good1", question="q1", additions={"conjunct": "c1"}, expected_conclusion="yes"),
+        Probe2Item(item_id="item_bad", base_premises="item_bad", question="q_bad", additions={"conjunct": "c2"}, expected_conclusion="yes"),
+    ]
+    p2_res = evaluate_model_probe2(model, p2_items)
+    # 1 out of 2 succeeded
+    assert len(p2_res["records"]) == 1
+    assert p2_res["total_items"] == 1
+    assert p2_res["records"][0]["item_id"] == "item_good1"
+
 
 
 

@@ -32,17 +32,20 @@ class Probe2Answer(BaseModel):
     rationale: Optional[str] = Field(default=None, description="Brief step-by-step justification.")
 
 
-def _strict_schema(model: type[BaseModel]) -> dict:
+def _strict_schema(model: type[BaseModel], trim_rationale: bool = True) -> dict:
     """Builds an OpenAI/vLLM strict json_schema: no extras.
 
-    ``required`` lists only the fields that genuinely have no default, so
-    optional ones (e.g. ``rationale: Optional[str] = None``) stay out of the
-    grammar. Forcing every field to be required makes models emit long free-text
-    rationales that can overflow ``max_tokens`` and truncate the JSON mid-object.
+    Excludes optional free-text rationale from properties so models cannot emit
+    unbounded textual reasoning inside the JSON object, preventing token truncation.
+    ``required`` lists all active properties.
     """
     schema = model.model_json_schema()
     schema["additionalProperties"] = False
-    schema["required"] = [name for name, field in model.model_fields.items() if field.is_required()]
+    if trim_rationale and "properties" in schema and "rationale" in schema["properties"]:
+        del schema["properties"]["rationale"]
+    schema["required"] = [
+        name for name in schema.get("properties", {}).keys()
+    ]
     return schema
 
 
