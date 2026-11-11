@@ -1,187 +1,148 @@
-# Empirical Probes for Reasoning Systems (Section 6)
+# Replication Suite: "Reasoning Systems, Scored Alike"
+### Empirical Evaluation Suite for Section 6 and Table 4
 
-This repository contains the standalone, open-source empirical evaluation suite operationalizing **Section 6** of the paper:
-* **Probe 1 (\S6.2): Uncertainty Coherence vs. Sequence Likelihood** (evaluates $A3 = \text{none}$).
-* **Probe 2 (\S6.3): Monotonicity and Defeasible Stability Suite** (evaluates $A4 = \text{unregulated}$).
+This repository contains the standalone, open-source empirical evaluation suite supporting the paper:
+> **"Reasoning Systems, Scored Alike: A Four-Axis Evaluation of Classical and Connectionist Architectures"**
 
-Both probes benchmark connectionist reasoning models against classical formal positive controls (**ProbLog** for probabilistic coherence, and **Clingo** for deductive monotonicity).
+It operationalizes the paper's two empirical probes auditing the unmapped taxonomic coordinates against by-construction classical controls:
+* **Probe 1 (§6.2, Table 4 Column P1): Uncertainty Coherence vs. Sequence Likelihood** (evaluates $A3 = \text{none}$).
+* **Probe 2 (§6.3, Table 4 Column P2): Monotonicity and Defeasible Stability Suite** (evaluates $A4 = \text{unregulated}$).
+* **Classical Positive Controls (§6.1):** **ProbLog** (exact Bayesian inference) and **Clingo** (Answer Set Programming grounder and solver).
 
 ---
 
-## 1. Environment & Setup
+## 1. Paper-to-Code Traceability Matrix
 
-The suite runs under Python 3.12 within the designated project environment:
+| Paper Section & Artifact | Research Objective / Formal Claim | Implementation & Control Scripts | Evaluation Data & Outputs |
+| :--- | :--- | :--- | :--- |
+| **§6.1 (Experimental Setup)** | Standardized remote inference & dual cohort | `common/models.py`, `common/schemas.py` | Pydantic JSON schemas, deterministic decoding ($\tau=0$) |
+| **§6.2 & Table 4 (Column P1)** | Kolmogorov finite additivity ($P(H) + P(\neg H) = 1.0$) | `probe1_uncertainty/runner.py`, `dataset.py` | GSM8K matched hypothesis pairs ($N=100$) |
+| **§6.2 & Table 4 (Column P1)** | Classical normative probabilistic control | `probe1_uncertainty/problog_control.py` | ProbLog solver ($0.0\%$ violation rate) |
+| **§6.2 & Table 4 (Column P1)** | External Bayesian scaffolding | `common/models.py` (`BayesianScaffoldedModel`) | Restores additivity; induces calibration--coherence trade-off |
+| **§6.3 & Table 4 (Column P2)** | Defeasible stability under vacuous premise additions | `probe2_monotonicity/runner.py`, `dataset.py` | ProntoQA OOD ontology ($N=300$ per model) |
+| **§6.3 & Table 4 (Column P2)** | Classical deductive monotonic control | `probe2_monotonicity/clingo_control.py` | Clingo ASP solver ($0.0\%$ flip rate) |
+| **§6.4 & Table 4** | Complete empirical logs for the 8 evaluated models | `results/` | `results/latest_completed_evaluations.json` |
+
+---
+
+## 2. Quickstart: Replicating Paper Findings
+
+### A. Verify Classical Positive Controls (Offline, No API Keys Required)
+The paper's formal positive controls (**ProbLog** for Kolmogorov additivity and **Clingo** for monotonic deductive stability) can be verified locally and deterministically via the test suite:
 
 ```bash
-source /home/vasily/krono/fofo/fofo_12env/bin/activate
+pytest tests/
 ```
+* **Expected Result for Probe 1 (ProbLog):** Additivity violation $\Delta_{\mathrm{add}} = 0.0000$ ($0.0\%$ violation rate) across all query pairs.
+* **Expected Result for Probe 2 (Clingo):** Flip rate $= 0.0\%$ across Conjunct, Instantiation, and Semantic Paraphrase conditions.
 
-Dependencies installed in the environment:
-* `problog` (Probabilistic logic programming exact inference engine)
-* `clingo` (Answer Set Programming grounder and solver)
-* `numpy`, `scipy`, `httpx`, `pytest`
+### B. Inspect & Re-aggregate Table 4 Results from Raw Execution Logs
+All raw model completion logs and structured evaluation records reported in Table 4 are archived in `results/`. To re-extract and inspect the exact numbers reported in the paper:
+
+```bash
+python collect_latest_snapshots.py
+```
+This generates `results/latest_completed_evaluations.json`, compiling the verified metrics for all 8 reported architectures:
+1. `GLM-5.3`
+2. `DeepSeek-V4.1-Flash`
+3. `DeepSeek-V4-Flash`
+4. `NVIDIA-Nemotron-3.5-Super-VL`
+5. `Llama-3.3-70B-Instruct-Turbo`
+6. `Qwen3.8-Flash`
+7. `Mistral-Small-3.2-24B-Instruct-2506`
+8. `Mistral-Nemo-Instruct-2407`
 
 ---
 
-## 2. Quickstart
+## 3. Environment & Installation
 
-`run_master.py` is the only entry point of the suite. Run the complete
-evaluation across a live reasoning model endpoint
-(execute from **within** the `probes/` directory):
+### Requirements
+* Python 3.10+
+* Linux / macOS
 
 ```bash
+# 1. Clone the repository
+git clone <repo-url>
 cd probes
-/home/vasily/krono/fofo/fofo_12env/bin/python run_master.py \
-    --api-url "http://localhost:8000/v1" \
-    --model "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
-```
 
-A model is required: without `--model`/`--models-file` the controller aborts, and
-without a resolvable endpoint (`--api-url`/`--api-key` or the corresponding
-environment/`.env` values) `run_suite()` raises before any request is sent. Raw
-output lands in `results/<slug>_probe_results.json`, where `<slug>` is the
-sanitized model ID.
+# 2. Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-### Options
-
-* **Run Probe 1 only (Uncertainty):**
-  ```bash
-  /home/vasily/krono/fofo/fofo_12env/bin/python run_master.py --mode probe1 --model <ID> --api-url <URL>
-  ```
-* **Run Probe 2 only (Monotonicity):**
-  ```bash
-  /home/vasily/krono/fofo/fofo_12env/bin/python run_master.py --mode probe2 --model <ID> --api-url <URL>
-  ```
-
-`run_probes.py` is a library, not a script: it holds the evaluation core
-(`run_suite()` plus the dataset loading helpers) and has no CLI. `python
-run_probes.py` does nothing. Import it to drive the suite from your own code:
-
-```python
-from run_probes import SuiteConfig, resolve_endpoint, run_suite
-
-cfg = resolve_endpoint(SuiteConfig(mode="probe1", dataset="seed", n_items=8))
-payload = run_suite(["deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"], cfg)
+# 3. Install dependencies
+pip install problog clingo pydantic numpy scipy httpx pytest
 ```
 
 ---
 
-## 2b. Multi-Model Sweeps (Master Controller)
+## 4. Running Live Evaluation Sweeps
 
-`run_master.py` sweeps multiple models in-process via `run_suite()` from
-`run_probes.py` — the same code path a single `--model` run uses. Datasets are
-model-independent, so they are loaded **once** per unique (dataset, mode,
-n_items) signature and reused across the sweep. (Classical controls ProbLog and
-Clingo are verified separately via unit tests in `tests/test_probes.py`).
-A failing model never aborts the run: its exception + traceback is captured in
-the manifest under `error_details`, status becomes `partial`/`failed`, and the
-sweep continues. Per-model outputs land in `results/<slug>_probe_results.json`;
-a combined manifest (status + headline metrics) lands in
-`results/sweep_results.json`.
+`run_master.py` is the unified master controller for executing probes across live model endpoints.
 
+### Executing a Single Model Run:
 ```bash
-# Two ad-hoc models against one endpoint:
-/home/vasily/krono/fofo/fofo_12env/bin/python run_master.py \
-    --model "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B" \
-    --model "openai/o3-mini" \
-    --api-url "https://opencode.ai/inference/openai/v1"
-
-# Declarative spec file with per-model overrides; bare strings are also allowed:
-/home/vasily/krono/fofo/fofo_12env/bin/python run_master.py --models-file models.json
+python run_master.py \
+    --api-url "https://api.example.com/v1" \
+    --api-key "$API_KEY" \
+    --model "deepseek-ai/DeepSeek-V4.1-Flash"
 ```
 
-`models.json` example (each object key overrides the CLI default for that
-model only):
+### Running Targeted Probes:
+* **Run Probe 1 only (Uncertainty Coherence):**
+  ```bash
+  python run_master.py --mode probe1 --model <MODEL_ID> --api-url <URL>
+  ```
+* **Run Probe 2 only (Defeasible Monotonicity):**
+  ```bash
+  python run_master.py --mode probe2 --model <MODEL_ID> --api-url <URL>
+  ```
 
-```json
-{
-  "models": [
-    "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
-    {"model_id": "qwen/qwq-32b", "n_items": 50},
-    {"model_id": "openai/o3-mini", "mode": "probe1", "temperature": 0.7, "no_scaffold": true}
-  ]
-}
+### Multi-Model Sweeps:
+To evaluate multiple models under standardized conditions, specify models via `models.json` or CLI flags:
+```bash
+python run_master.py --models-file models.json
 ```
 
-Overridable per-model keys: `mode`, `dataset`, `n_items`, `api_url`, `api_key`,
-`temperature`, `max_tokens`, `timeout`, `token_ceiling`, `include_scaffold` / `no_scaffold`.
-Top-level defaults in `models.json`: `default_api_url`, `default_timeout`, `default_token_ceiling`.
+---
 
-Controller flags: `--model` (repeatable) and `--models-file` select the models;
-`--mode`, `--dataset`, `--n-items`, `--api-url`, `--api-key`,
-`--temperature`, `--max-tokens`, `--timeout`, `--token-ceiling`, `--no-scaffold` are sweep
-defaults. Others:
-* `--timeout <float>`: HTTP client read timeout in seconds (default: `180.0`; configurable via `PROBE_TIMEOUT`).
-* `--token-ceiling <int>`: maximum token ceiling for truncation retry escalation (default: `16384`; configurable via `COMPLETION_TOKEN_CEILING`).
-* `--seed <int>`: random seed for deterministic sampling from GSM8K and ProntoQA (default: `42`; pass `-1` for sequential slice).
-* `--timestamp` / `--no-timestamp` (default: enabled): saves all outputs with UTC timestamps (`YYYYMMDD_HHMMSS`) while maintaining un-timestamped canonical copies for downstream tooling.
-* `--timestamp-dir`: saves runs into dedicated timestamped subdirectories inside the output directory.
-* `--output-dir`: target directory for per-model and sweep outputs (default: `results/`).
-* `--output-json`: custom combined manifest path.
-* `--dry-run`: print planned model list and output destinations without making API calls.
-* `--fail-fast`: abort sweep immediately after the first model failure. Exit code is non-zero if any model fails.
+## 5. Structured Elicitation & Measurement Protocol
+
+To eliminate extraction bias and enforce strict schema compliance without subjective parsing heuristics:
+* **Pydantic Response Schemas (`common/schemas.py`):**
+  * **Probe 1:** `Probe1Answer {verdict: bool, confidence: float in [0,1], rationale: str?}`
+  * **Probe 2:** `Probe2Answer {verdict: bool, rationale: str?}`
+* **Fail-Loud Enforcement:** Any missing, out-of-range, or unparseable field immediately raises `ExtractionError`. No silent `0.5` defaults are permitted, ensuring that parse failures cannot artificially mimic probabilistic coherence.
+* **Dual-Channel Measurement:** Elicited verbalized confidence is measured alongside sequence token log-probabilities to evaluate the unassisted continuation likelihood channel independently of prompt-induced format constraints.
 
 ---
 
-## 3. Structured Elicitation (Schema-Validated Outputs)
-
-All verbalized answers are elicited exclusively through **pydantic schemas**
-(`common/schemas.py`) with server-side constrained decoding (`response_format`).
-There is no free-form extraction mode.
-
-* **Probe 1:** `Probe1Answer {verdict: bool, confidence: float in [0,1], rationale: str?}`
-* **Probe 2:** `Probe2Answer {verdict: bool, rationale: str?}`
-
-Design rules:
-
-* **Fail loud:** any missing/out-of-range/unparseable field raises `ExtractionError`. There is no silent `0.5` fallback — a parse failure can never masquerade as a probe result (e.g. 0.5+0.5 fake coherence).
-* **Dual channel (Probe 1):** the sequence-likelihood arm (natural text + token logprobs) is emitted on a separate schema-free call, because logprobs of forced-JSON tokens are format-dominated artefacts. Agreement and confidence-gap between the two channels are logged in `records[].extraction_audit_h` so structured elicitation itself is auditable.
-
----
-
-## 4. Dependencies
-
-* `pydantic` (response schemas and validation) — added to the environment alongside `problog`, `clingo`, `numpy`, `scipy`, `httpx`, `pytest`.
-
----
-
-## 5. Directory Structure
+## 6. Directory Structure
 
 ```
 probes/
-├── README.md                          # Documentation
-├── run_master.py                      # Sole CLI entry point (single models and sweeps)
-├── run_probes.py                      # Evaluation core: run_suite() + setup helpers (library only)
+├── README.md                          # Paper replication and execution guide
+├── run_master.py                      # Master CLI controller for live probe execution
+├── run_probes.py                      # Evaluation core library: run_suite() + orchestration
+├── collect_latest_snapshots.py        # Snapshot aggregator generating Table 4 metrics
+├── models.json                        # Declarative model sweep specifications
 ├── common/
-│   ├── config.py                      # Global configuration and extraction regexes
+│   ├── config.py                      # Global configuration parameters
 │   ├── metrics.py                     # Brier score, additivity violation, flip rates
-│   ├── models.py                      # Model interfaces (Base, Bayesian Harness, API)
-│   └── schemas.py                     # Pydantic response schemas + strict JSON parsing
+│   ├── models.py                      # Base API client and BayesianScaffoldedModel
+│   └── schemas.py                     # Pydantic schemas for grammar-constrained decoding
 ├── probe1_uncertainty/
-│   ├── dataset.py                     # GSM8K / MATH items with paired hypotheses (H, ~H)
+│   ├── dataset.py                     # GSM8K matched pairs (H, ~H) loader
 │   ├── problog_control.py             # Classical control: exact ProbLog solver (0% violation)
 │   └── runner.py                      # Probe 1 execution logic
 ├── probe2_monotonicity/
-│   ├── dataset.py                     # Logical premises with 3 addition conditions
+│   ├── dataset.py                     # ProntoQA synthetic premise-addition loader
 │   ├── clingo_control.py              # Classical control: ASP Clingo solver (0% flips)
 │   └── runner.py                      # Probe 2 execution logic
 ├── results/
-│   ├── <slug>_probe_results_<ts>.json # Timestamped per-model outputs (written by run_master.py)
-│   ├── <slug>_probe_results.json      # Canonical latest copy
-│   ├── sweep_results_<ts>.json        # Timestamped combined sweep manifest
-│   ├── sweep_results.json             # Canonical latest manifest
-│   └── legacy/                        # Pre-schema artifacts, kept for provenance only
-│       └── README.md                  # Why they are not reproducible / which numbers are bad
+│   ├── latest_completed_evaluations.json # Aggregated Table 4 metrics across all 8 models
+│   ├── sweep_results.json             # Canonical sweep manifest
+│   ├── <model_slug>_probe_results.json # Full evaluation logs for each evaluated model
+│   └── legacy/                        # Historical pre-schema logs
 └── tests/
-    └── test_probes.py                 # Pytest test suite
-```
-
----
-
-## 6. Running Unit Tests
-
-To verify metrics, Clingo integration, and ProbLog execution:
-
-```bash
-/home/vasily/krono/fofo/fofo_12env/bin/pytest tests/
+    └── test_probes.py                 # Pytest test suite for classical controls & metrics
 ```
