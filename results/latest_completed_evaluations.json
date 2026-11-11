@@ -1,0 +1,234 @@
+{
+  "Qwen/Qwen3.8-Flash": {
+    "model_id": "Qwen/Qwen3.8-Flash",
+    "timestamp": "20261106_143611",
+    "file_path": "results/Qwen_Qwen3.8-Flash_probe_results_20261106_143611.json",
+    "probe1_unassisted": {
+      "system": "Qwen_Qwen3.8-Flash",
+      "verbalized_brier": 0.0012,
+      "logprob_brier": 0.0835,
+      "mean_additivity_violation": 0.4243,
+      "additivity_violation_rate_pct": 49.0
+    },
+    "probe1_harness": {
+      "system": "Qwen_Qwen3.8-Flash_+_Bayesian_Harness",
+      "verbalized_brier": 0.095,
+      "logprob_brier": 0.0839,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "Qwen_Qwen3.8-Flash",
+      "total_items": 100,
+      "overall_flip_rate_pct": 2.7,
+      "flip_rates_by_condition": {
+        "conjunct": 3.0,
+        "instantiation": 0.0,
+        "paraphrase": 5.0
+      }
+    }
+  },
+  "deepseek-ai/DeepSeek-V4-Flash": {
+    "model_id": "deepseek-ai/DeepSeek-V4-Flash",
+    "timestamp": "20261106_143611",
+    "file_path": "results/deepseek-ai_DeepSeek-V4-Flash_probe_results_20261106_143611.json",
+    "probe1_unassisted": {
+      "system": "deepseek-ai_DeepSeek-V4-Flash",
+      "verbalized_brier": 0.0,
+      "logprob_brier": 0.0859,
+      "mean_additivity_violation": 0.9995,
+      "additivity_violation_rate_pct": 100.0
+    },
+    "probe1_harness": {
+      "system": "deepseek-ai_DeepSeek-V4-Flash_+_Bayesian_Harness",
+      "verbalized_brier": 0.2501,
+      "logprob_brier": 0.0857,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "deepseek-ai_DeepSeek-V4-Flash",
+      "total_items": 100,
+      "overall_flip_rate_pct": 13.3,
+      "flip_rates_by_condition": {
+        "conjunct": 19.0,
+        "instantiation": 8.0,
+        "paraphrase": 13.0
+      }
+    }
+  },
+  "deepseek-ai/DeepSeek-V4.1-Flash": {
+    "model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "timestamp": "20261107_235817",
+    "file_path": "results/deepseek-ai_DeepSeek-V4.1-Flash_probe_results_20261107_235817.json",
+    "probe1_unassisted": {
+      "system": "deepseek-ai_DeepSeek-V4.1-Flash",
+      "verbalized_brier": 0.0,
+      "logprob_brier": 0.0865,
+      "mean_additivity_violation": 0.9927,
+      "additivity_violation_rate_pct": 100.0
+    },
+    "probe1_harness": {
+      "system": "deepseek-ai_DeepSeek-V4.1-Flash_+_Bayesian_Harness",
+      "verbalized_brier": 0.2498,
+      "logprob_brier": 0.0865,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "deepseek-ai_DeepSeek-V4.1-Flash",
+      "total_items": 100,
+      "overall_flip_rate_pct": 11.3,
+      "flip_rates_by_condition": {
+        "conjunct": 13.0,
+        "instantiation": 9.0,
+        "paraphrase": 12.0
+      }
+    }
+  },
+  "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+    "model_id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "timestamp": "20261107_065412",
+    "file_path": "results/meta-llama_Llama-3.3-70B-Instruct-Turbo_probe_results_20261107_065412.json",
+    "probe1_unassisted": {
+      "system": "meta-llama_Llama-3.3-70B-Instruct-Turbo",
+      "verbalized_brier": 0.4729,
+      "logprob_brier": 0.0799,
+      "mean_additivity_violation": 0.5105,
+      "additivity_violation_rate_pct": 53.0
+    },
+    "probe1_harness": {
+      "system": "meta-llama_Llama-3.3-70B-Instruct-Turbo_+_Bayesian_Harness",
+      "verbalized_brier": 0.5978,
+      "logprob_brier": 0.0798,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "meta-llama_Llama-3.3-70B-Instruct-Turbo",
+      "total_items": 100,
+      "overall_flip_rate_pct": 15.7,
+      "flip_rates_by_condition": {
+        "conjunct": 15.0,
+        "instantiation": 16.0,
+        "paraphrase": 16.0
+      }
+    }
+  },
+  "mistralai/Mistral-Nemo-Instruct-2407": {
+    "model_id": "mistralai/Mistral-Nemo-Instruct-2407",
+    "timestamp": "20261106_143611",
+    "file_path": "results/mistralai_Mistral-Nemo-Instruct-2407_probe_results_20261106_143611.json",
+    "probe1_unassisted": {
+      "system": "mistralai_Mistral-Nemo-Instruct-2407",
+      "verbalized_brier": 0.8202,
+      "logprob_brier": 0.0883,
+      "mean_additivity_violation": 0.188,
+      "additivity_violation_rate_pct": 50.0
+    },
+    "probe1_harness": {
+      "system": "mistralai_Mistral-Nemo-Instruct-2407_+_Bayesian_Harness",
+      "verbalized_brier": 0.8483,
+      "logprob_brier": 0.0881,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "mistralai_Mistral-Nemo-Instruct-2407",
+      "total_items": 100,
+      "overall_flip_rate_pct": 17.0,
+      "flip_rates_by_condition": {
+        "conjunct": 16.0,
+        "instantiation": 20.0,
+        "paraphrase": 15.0
+      }
+    }
+  },
+  "mistralai/Mistral-Small-3.2-24B-Instruct-2506": {
+    "model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+    "timestamp": "20261106_143611",
+    "file_path": "results/mistralai_Mistral-Small-3.2-24B-Instruct-2506_probe_results_20261106_143611.json",
+    "probe1_unassisted": {
+      "system": "mistralai_Mistral-Small-3.2-24B-Instruct-2506",
+      "verbalized_brier": 0.0001,
+      "logprob_brier": 0.0824,
+      "mean_additivity_violation": 0.9945,
+      "additivity_violation_rate_pct": 100.0
+    },
+    "probe1_harness": {
+      "system": "mistralai_Mistral-Small-3.2-24B-Instruct-2506_+_Bayesian_Harness",
+      "verbalized_brier": 0.2499,
+      "logprob_brier": 0.0821,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "mistralai_Mistral-Small-3.2-24B-Instruct-2506",
+      "total_items": 100,
+      "overall_flip_rate_pct": 13.0,
+      "flip_rates_by_condition": {
+        "conjunct": 12.0,
+        "instantiation": 12.0,
+        "paraphrase": 15.0
+      }
+    }
+  },
+  "nvidia/NVIDIA-Nemotron-3.5-Super-VL": {
+    "model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "timestamp": "20261107_235817",
+    "file_path": "results/nvidia_NVIDIA-Nemotron-3.5-Super-VL_probe_results_20261107_235817.json",
+    "probe1_unassisted": {
+      "system": "nvidia_NVIDIA-Nemotron-3.5-Super-VL",
+      "verbalized_brier": 0.0014,
+      "logprob_brier": 0.0801,
+      "mean_additivity_violation": 0.9675,
+      "additivity_violation_rate_pct": 99.0
+    },
+    "probe1_harness": {
+      "system": "nvidia_NVIDIA-Nemotron-3.5-Super-VL_+_Bayesian_Harness",
+      "verbalized_brier": 0.24,
+      "logprob_brier": 0.0804,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "nvidia_NVIDIA-Nemotron-3.5-Super-VL",
+      "total_items": 100,
+      "overall_flip_rate_pct": 0.3,
+      "flip_rates_by_condition": {
+        "conjunct": 0.0,
+        "instantiation": 0.0,
+        "paraphrase": 1.0
+      }
+    }
+  },
+  "zai-org/GLM-5.3": {
+    "model_id": "zai-org/GLM-5.3",
+    "timestamp": "20261107_235817",
+    "file_path": "results/zai-org_GLM-5.3_probe_results_20261107_235817.json",
+    "probe1_unassisted": {
+      "system": "zai-org_GLM-5.3",
+      "verbalized_brier": 0.0021,
+      "logprob_brier": 0.0829,
+      "mean_additivity_violation": 0.9792,
+      "additivity_violation_rate_pct": 100.0
+    },
+    "probe1_harness": {
+      "system": "zai-org_GLM-5.3_+_Bayesian_Harness",
+      "verbalized_brier": 0.2449,
+      "logprob_brier": 0.0822,
+      "mean_additivity_violation": 0.0,
+      "additivity_violation_rate_pct": 0.0
+    },
+    "probe2": {
+      "system": "zai-org_GLM-5.3",
+      "total_items": 96,
+      "overall_flip_rate_pct": 0.0,
+      "flip_rates_by_condition": {
+        "conjunct": 0.0,
+        "instantiation": 0.0,
+        "paraphrase": 0.0
+      }
+    }
+  }
+}

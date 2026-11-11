@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-11-07T15:49:28.566681+00:00",
+  "run_timestamp": "20261107_154928",
+  "sweep_config": {
+    "model_ids": [
+      "zai-org/GLM-5.3",
+      "deepseek-ai/DeepSeek-V4.1-Flash",
+      "nvidia/NVIDIA-Nemotron-3.5-Super-VL"
+    ],
+    "defaults": {
+      "mode": "all",
+      "dataset": "standard",
+      "n_items": 100,
+      "seed": 87,
+      "api_url": null,
+      "include_scaffold": true,
+      "temperature": 0.0,
+      "max_tokens": 16384,
+      "timeout": 180.0,
+      "token_ceiling": 16384,
+      "timestamp": true,
+      "timestamp_dir": false
+    }
+  },
+  "models": [
+    {
+      "model_id": "zai-org/GLM-5.3",
+      "slug": "zai-org_GLM-5.3",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 16384,
+        "timeout": 180.0,
+        "token_ceiling": 16384
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-5.3_probe_results_20261107_154928.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/zai-org_GLM-5.3_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "zai-org_GLM-5.3": {
+          "message": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 154, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 118, in evaluate_model\n    p2_out = evaluate_model_probe2(model, p2_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe2_monotonicity/runner.py\", line 44, in evaluate_model_probe2\n    perturbed_out = model.generate(perturbed_prompt, Probe2Answer)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 269, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        },
+        "zai-org_GLM-5.3_+_Bayesian_Harness": {
+          "message": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 154, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 115, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 48, in evaluate_model_probe1\n    out_not_h = model.generate(prompt_not_h, Probe1Answer, logprobs=True)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 122, in generate\n    out = self.base_model.generate(prompt, schema, system_prompt, logprobs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 269, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {},
+        "probe2_models": {}
+      },
+      "duration_s": 4552.7
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "slug": "deepseek-ai_DeepSeek-V4.1-Flash",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 16384,
+        "timeout": 180.0,
+        "token_ceiling": 16384
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4.1-Flash_probe_results_20261107_154928.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/deepseek-ai_DeepSeek-V4.1-Flash_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "deepseek-ai_DeepSeek-V4.1-Flash": {
+          "message": "TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 154, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 115, in evaluate_model\n    p1_out = evaluate_model_probe1(model, p1_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe1_uncertainty/runner.py\", line 37, in evaluate_model_probe1\n    out_h = model.generate(prompt_h, Probe1Answer, logprobs=True)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 269, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: deepseek-ai_DeepSeek-V4.1-Flash: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {
+          "deepseek-ai_DeepSeek-V4.1-Flash_+_Bayesian_Harness": {
+            "verbalized_brier": 0.2499,
+            "logprob_brier": 0.0829,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {}
+      },
+      "duration_s": 934.0
+    },
+    {
+      "model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "slug": "nvidia_NVIDIA-Nemotron-3.5-Super-VL",
+      "config": {
+        "mode": "all",
+        "dataset": "standard",
+        "n_items": 100,
+        "seed": 87,
+        "api_url": "https://api.deepinfra.com/v1/openai",
+        "include_scaffold": true,
+        "temperature": 0.0,
+        "max_tokens": 16384,
+        "timeout": 180.0,
+        "token_ceiling": 16384
+      },
+      "output_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/nvidia_NVIDIA-Nemotron-3.5-Super-VL_probe_results_20261107_154928.json",
+      "latest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/nvidia_NVIDIA-Nemotron-3.5-Super-VL_probe_results.json",
+      "exit_code": 0,
+      "status": "partial",
+      "error_details": {
+        "nvidia_NVIDIA-Nemotron-3.5-Super-VL": {
+          "message": "TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 154, in run_suite\n    p1_out, p2_out = evaluate_model(model, cfg, p1_dataset, p2_dataset)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/run_probes.py\", line 118, in evaluate_model\n    p2_out = evaluate_model_probe2(model, p2_dataset)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/probe2_monotonicity/runner.py\", line 44, in evaluate_model_probe2\n    perturbed_out = model.generate(perturbed_prompt, Probe2Answer)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/common/models.py\", line 269, in generate\n    raise TruncatedResponseError(\ncommon.models.TruncatedResponseError: nvidia_NVIDIA-Nemotron-3.5-Super-VL: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.\n"
+        }
+      },
+      "summary": {
+        "probe1_models": {
+          "nvidia_NVIDIA-Nemotron-3.5-Super-VL_+_Bayesian_Harness": {
+            "verbalized_brier": 0.2476,
+            "logprob_brier": 0.0791,
+            "additivity_violation_rate": 0.0
+          }
+        },
+        "probe2_models": {}
+      },
+      "duration_s": 1887.1
+    }
+  ],
+  "failures": [
+    "zai-org/GLM-5.3",
+    "deepseek-ai/DeepSeek-V4.1-Flash",
+    "nvidia/NVIDIA-Nemotron-3.5-Super-VL"
+  ],
+  "sweep_manifest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/sweep_results_20261107_154928.json",
+  "latest_manifest_file": "/home/vasily/Desktop/academics/technical_writing/sota_reasoning/probes/results/sweep_results.json"
+}

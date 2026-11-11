@@ -1,0 +1,23 @@
+{
+  "run_config": {
+    "mode": "all",
+    "dataset": "standard",
+    "n_items": 100,
+    "seed": 87,
+    "temperature": 0.0,
+    "max_tokens": 16384,
+    "timeout": 180.0,
+    "token_ceiling": 16384,
+    "include_scaffold": true,
+    "api_url": "https://api.deepinfra.com/v1/openai",
+    "model_ids": [
+      "zai-org/GLM-5.3"
+    ]
+  },
+  "probe1_models": {},
+  "probe2_models": {},
+  "errors": {
+    "zai-org_GLM-5.3": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema.",
+    "zai-org_GLM-5.3_+_Bayesian_Harness": "TruncatedResponseError: zai-org_GLM-5.3: completion truncated at max_tokens=16384 (finish_reason='length') after 0 retry(ies); the required schema or reasoning budget is too large -- raise max_tokens or trim the schema."
+  }
+}
